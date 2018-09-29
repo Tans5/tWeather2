@@ -1,0 +1,14 @@
+package com.tans.tweather2.repository.resource
+
+import com.tans.tweather2.api.service.CitiesService
+import com.tans.tweather2.api.service.LocationService
+import com.tans.tweather2.api.service.WeatherService
+import javax.inject.Inject
+
+class RemoteResource @Inject constructor(
+        private val locationService: LocationService,
+        private val weatherService: WeatherService,
+        private val citiesService: CitiesService
+) {
+
+}
