@@ -8,7 +8,7 @@ versions.rxJava = "2.2.2"
 versions.rxAndroid = "2.1.0"
 versions.retrofit = "2.4.0"
 versions.gson = "2.8.5"
-
+versions.okhttp = "3.11.0"
 def dagger = [:]
 //Dagger
 dagger.runtime = "com.google.dagger:dagger:$versions.dagger"
@@ -55,3 +55,9 @@ ext.deps.retrofit = retrofit
 def gson = [:]
 gson.runtime = "com.google.code.gson:gson:$versions.gson"
 ext.deps.gson = gson
+
+//Okhttp
+def okhttp = [:]
+okhttp.runtime = "com.squareup.okhttp3:okhttp3:$versions.okhttp"
+okhttp.loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
+ext.deps.okhttp = okhttp
