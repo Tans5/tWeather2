@@ -5,5 +5,5 @@ sealed class ApiResponse<T> {
 
     class ApiSuccessResponse<T>(val r: T) : ApiResponse<T> ()
 
-    class ApiEmptyResponse<T>() : ApiResponse<T> ()
+    class ApiEmptyResponse<T> : ApiResponse<T> ()
 }

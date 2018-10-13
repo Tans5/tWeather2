@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.i(this::class.java.simpleName, "$viewModel")
         viewModel.fetchWeatherAtmosphere("成都")
     }
 }
