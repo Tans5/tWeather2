@@ -5,7 +5,7 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import com.tans.tweather2.entites.City
-import io.reactivex.Flowable
+import io.reactivex.Single
 
 @Dao
 interface CityDao {
@@ -13,8 +13,8 @@ interface CityDao {
     fun insert(city: City)
 
     @Query("select * from city where id = :id")
-    fun queryById(id: String): Flowable<City>
+    fun queryById(id: String): Single<List<City>>
 
     @Query("select * from city where parentId = :parentId")
-    fun queryByParentId(parentId: String): Flowable<City>
+    fun queryByParentId(parentId: String): Single<List<City>>
 }

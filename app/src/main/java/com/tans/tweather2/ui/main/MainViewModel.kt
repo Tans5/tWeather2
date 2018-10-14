@@ -2,6 +2,7 @@ package com.tans.tweather2.ui.main
 
 import android.arch.lifecycle.ViewModel
 import com.tans.tweather2.api.ApiResponse
+import com.tans.tweather2.repository.Either
 import com.tans.tweather2.repository.Repository
 import com.tans.tweather2.utils.switchThread
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,9 +15,8 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
                 .switchThread()
                 .subscribe{ it ->
                     when(it) {
-                        is ApiResponse.ApiSuccessResponse -> println("Success: ${it.r}.")
-                        is ApiResponse.ApiEmptyResponse -> println("Response empty!!")
-                        is ApiResponse.ApiErrorResponse -> println("Error: ${it.t}")
+                        is Either.Right -> println("success: ${it.data}")
+                        is Either.Left -> println("error: ${it.data}")
                     }
                 }
     }
@@ -26,9 +26,8 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
                 .switchThread()
                 .subscribe{ it ->
                     when(it) {
-                        is ApiResponse.ApiSuccessResponse -> println("Success: ${it.r}.")
-                        is ApiResponse.ApiEmptyResponse -> println("Response empty!!")
-                        is ApiResponse.ApiErrorResponse -> println("Error: ${it.t}")
+                        is Either.Right -> println("success: ${it.data}")
+                        is Either.Left -> println("error: ${it.data}")
                     }
                 }
     }
@@ -38,9 +37,8 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
                 .switchThread()
                 .subscribe{ it ->
                     when(it) {
-                        is ApiResponse.ApiSuccessResponse -> println("Success: ${it.r}.")
-                        is ApiResponse.ApiEmptyResponse -> println("Response empty!!")
-                        is ApiResponse.ApiErrorResponse -> println("Error: ${it.t}")
+                        is Either.Right -> println("success: ${it.data}")
+                        is Either.Left -> println("error: ${it.data}")
                     }
                 }
     }
@@ -50,9 +48,8 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
                 .switchThread()
                 .subscribe{ it ->
                     when(it) {
-                        is ApiResponse.ApiSuccessResponse -> println("Success: ${it.r}.")
-                        is ApiResponse.ApiEmptyResponse -> println("Response empty!!")
-                        is ApiResponse.ApiErrorResponse -> println("Error: ${it.t}")
+                        is Either.Right -> println("success: ${it.data}")
+                        is Either.Left -> println("error: ${it.data}")
                     }
                 }
     }

@@ -35,7 +35,7 @@ object ApiClient {
 
     private fun createOkHttpClient(): OkHttpClient {
         val clientBuilder = OkHttpClient.Builder()
-                .addInterceptor(HttpLoggingInterceptor())
+                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         return if (BuildConfig.isDebug) {
             clientBuilder.sslSocketFactory(createUnsafeSslSocketFactory(), createUnsafeTrustManager())
                     .build()

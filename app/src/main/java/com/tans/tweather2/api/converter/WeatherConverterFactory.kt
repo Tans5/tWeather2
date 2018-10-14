@@ -15,7 +15,7 @@ import java.lang.reflect.Type
 
 object WeatherConverterFactory : Converter.Factory() {
     override fun responseBodyConverter(type: Type, annotations: Array<Annotation>, retrofit: Retrofit): Converter<ResponseBody, *>? {
-        return if(getRawType(type) == ApiResponse::class.java) {
+        return if (getRawType(type) == ApiResponse::class.java) {
             when (getParameterUpperBound(0, type as ParameterizedType)) {
                 Atmosphere::class.java -> AtmosphereConverter
                 Forecast::class.java -> ForecastConverter
@@ -40,13 +40,17 @@ class JSONObjectAdapter(private val jsonObject: JSONObject) {
 
 object AtmosphereConverter : Converter<ResponseBody, ApiResponse<Atmosphere>> {
     override fun convert(value: ResponseBody): ApiResponse<Atmosphere> {
-        val resultString = JSONObjectAdapter(JSONObject(value.string()))
-                .get("query")
-                .get("results")
-                .get("channel")
-                .get("atmosphere")
-                .toString()
-        val body = Gson().fromJson<Atmosphere>(resultString, Atmosphere::class.java)
+        val body = try {
+            val resultString = JSONObjectAdapter(JSONObject(value.string()))
+                    .get("query")
+                    .get("results")
+                    .get("channel")
+                    .get("atmosphere")
+                    .toString()
+            Gson().fromJson<Atmosphere>(resultString, Atmosphere::class.java)
+        } catch (e: Exception) {
+            null
+        }
         return if (body == null) {
             ApiResponse.ApiEmptyResponse()
         } else {
@@ -57,14 +61,18 @@ object AtmosphereConverter : Converter<ResponseBody, ApiResponse<Atmosphere>> {
 
 object ConditionConverter : Converter<ResponseBody, ApiResponse<Condition>> {
     override fun convert(value: ResponseBody): ApiResponse<Condition> {
-        val resultString = JSONObjectAdapter(JSONObject(value.string()))
-                .get("query")
-                .get("results")
-                .get("channel")
-                .get("item")
-                .get("condition")
-                .toString()
-        val body = Gson().fromJson<Condition>(resultString, Condition::class.java)
+        val body = try {
+            val resultString = JSONObjectAdapter(JSONObject(value.string()))
+                    .get("query")
+                    .get("results")
+                    .get("channel")
+                    .get("item")
+                    .get("condition")
+                    .toString()
+            Gson().fromJson<Condition>(resultString, Condition::class.java)
+        } catch (e: Exception) {
+            null
+        }
         return if (body == null) {
             ApiResponse.ApiEmptyResponse()
         } else {
@@ -76,11 +84,15 @@ object ConditionConverter : Converter<ResponseBody, ApiResponse<Condition>> {
 
 object ForecastConverter : Converter<ResponseBody, ApiResponse<Forecast>> {
     override fun convert(value: ResponseBody): ApiResponse<Forecast> {
-        val resultString = JSONObjectAdapter(JSONObject(value.string()))
-                .get("query")
-                .get("results")
-                .toString()
-        val body = Gson().fromJson<Forecast>(resultString, Forecast::class.java)
+        val body = try {
+            val resultString = JSONObjectAdapter(JSONObject(value.string()))
+                    .get("query")
+                    .get("results")
+                    .toString()
+            Gson().fromJson<Forecast>(resultString, Forecast::class.java)
+        } catch (e: Exception) {
+            null
+        }
         return if (body == null) {
             ApiResponse.ApiEmptyResponse()
         } else {
@@ -92,13 +104,17 @@ object ForecastConverter : Converter<ResponseBody, ApiResponse<Forecast>> {
 
 object WindConverter : Converter<ResponseBody, ApiResponse<Wind>> {
     override fun convert(value: ResponseBody): ApiResponse<Wind> {
-        val resultString = JSONObjectAdapter(JSONObject(value.string()))
-                .get("query")
-                .get("results")
-                .get("channel")
-                .get("wind")
-                .toString()
-        val body = Gson().fromJson<Wind>(resultString, Wind::class.java)
+        val body = try {
+            val resultString = JSONObjectAdapter(JSONObject(value.string()))
+                    .get("query")
+                    .get("results")
+                    .get("channel")
+                    .get("wind")
+                    .toString()
+            Gson().fromJson<Wind>(resultString, Wind::class.java)
+        }catch (e: Exception) {
+            null
+        }
         return if (body == null) {
             ApiResponse.ApiEmptyResponse()
         } else {

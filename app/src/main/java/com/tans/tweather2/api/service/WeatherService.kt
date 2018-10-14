@@ -16,17 +16,17 @@ interface WeatherService {
                       @Query("format") format: String = "json",
                       @Query("env") env: String = "store://datables.org/alltableswithkeys"): Single<ApiResponse<Atmosphere>>
 
-    @GET("val/public/yql/")
+    @GET("v1/public/yql/")
     fun getCondition(@Query("q") yql: String,
                      @Query("format") format: String = "json",
                      @Query("env") env: String = "store://datables.org/alltableswithkeys"): Single<ApiResponse<Condition>>
 
-    @GET("val/public/yql/")
+    @GET("v1/public/yql/")
     fun getForecast(@Query("q") yql: String,
                     @Query("format") format: String = "json",
                     @Query("env") env: String = "store://datables.org/alltableswithkeys"): Single<ApiResponse<Forecast>>
 
-    @GET("val/public/yql/")
+    @GET("v1/public/yql/")
     fun getWind(@Query("q") yql: String,
                 @Query("format") format: String = "json",
                 @Query("env") env: String = "store://datables.org/alltableswithkeys"): Single<ApiResponse<Wind>>
@@ -35,7 +35,7 @@ interface WeatherService {
 
         enum class WeatherQueryType(val value: String) {
             WIND("wind"),
-            CONDITION("condition"),
+            CONDITION("item.condition"),
             ATMOSPHERE("atmosphere"),
             FORECAST("item.forecast")
         }
