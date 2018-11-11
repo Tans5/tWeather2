@@ -1,9 +1,11 @@
 package com.tans.tweather2.api
 
 import com.tans.tweather2.BuildConfig
+import com.tans.tweather2.api.converter.CityConverterFactory
 import com.tans.tweather2.api.converter.WeatherConverterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import java.security.SecureRandom
@@ -13,25 +15,21 @@ import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.X509TrustManager
 
 object ApiClient {
-    private const val LOCATION_BASE_URL = "http://com.tans.tweather2.api.map.baidu.com/"
 
-    private const val CITIES_BASE_URL = "http://www.weather.com.cn/"
-
-    private const val WEATHER_BASE_URL = "https://query.yahooapis.com/"
-
-    fun locationApiClientBuilder() = baseRetrofitClientBuilder()
-            .baseUrl(LOCATION_BASE_URL)!!
-
-    fun weatherApiClientBuilder() = baseRetrofitClientBuilder()
-            .baseUrl(WEATHER_BASE_URL)!!
-            .addConverterFactory(WeatherConverterFactory)
-
-    fun citesApiClientBuilder() = baseRetrofitClientBuilder()
-            .baseUrl(CITIES_BASE_URL)!!
-
-    private fun baseRetrofitClientBuilder() : Retrofit.Builder = Retrofit.Builder()
+    private val baseRetrofitClientBuilder = Retrofit.Builder()
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(createOkHttpClient())
+
+    fun retrofitClientBuilder(clientType: ClientType): Retrofit.Builder {
+        val converterFactory: Converter.Factory? = when (clientType) {
+            is ClientType.Weather -> WeatherConverterFactory
+            is ClientType.City -> CityConverterFactory
+            is ClientType.Location -> null
+        }
+        return baseRetrofitClientBuilder
+                .baseUrl(clientType.baseUrl)
+                .addConverterFactory(converterFactory)
+    }
 
     private fun createOkHttpClient(): OkHttpClient {
         val clientBuilder = OkHttpClient.Builder()
@@ -59,5 +57,12 @@ object ApiClient {
         it.init(null, arrayOf(createUnsafeTrustManager()), SecureRandom())
         it.socketFactory
     }
+
+    sealed class ClientType(val tag: String, val baseUrl: String) {
+        object Location : ClientType(tag = "location", baseUrl = "http://com.tans.tweather2.api.map.baidu.com/")
+        object City : ClientType(tag = "city", baseUrl = "http://www.weather.com.cn/")
+        object Weather : ClientType(tag = "weather", baseUrl = "https://query.yahooapis.com/")
+    }
+
 }
 

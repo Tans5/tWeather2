@@ -6,14 +6,14 @@ sealed class Either<out L, out R>() {
 
     abstract fun isLeft(): Boolean
 
-    class Right<T>(val data: T): Either<Nothing, T>() {
+    class Right<out T>(val data: T): Either<Nothing, T>() {
 
         override fun isRight(): Boolean = true
 
         override fun isLeft(): Boolean = false
     }
 
-    class Left<T>(val data: T): Either<T, Nothing>() {
+    class Left<out T>(val data: T): Either<T, Nothing>() {
         override fun isRight(): Boolean = false
 
         override fun isLeft(): Boolean = true

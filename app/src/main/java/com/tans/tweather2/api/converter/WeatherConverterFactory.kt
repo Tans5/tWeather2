@@ -30,10 +30,7 @@ object WeatherConverterFactory : Converter.Factory() {
 }
 
 class JSONObjectAdapter(private val jsonObject: JSONObject) {
-    fun get(name: String): JSONObjectAdapter {
-        println(name)
-        return JSONObjectAdapter(jsonObject.get(name) as JSONObject)
-    }
+    fun get(name: String): JSONObjectAdapter = JSONObjectAdapter(jsonObject.get(name) as JSONObject)
 
     override fun toString() = jsonObject.toString()
 }

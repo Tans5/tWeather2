@@ -21,39 +21,33 @@ class ApplicationModule {
     @Provides
     fun provideBaseContext(app: TWeatherApplication): Context = app.baseContext
 
-    @Named("location")
-    @Singleton
-    @Provides
-    fun provideLocationApiClientBuilder(): Retrofit.Builder = ApiClient.locationApiClientBuilder()
-
-    @Named("weather")
-    @Singleton
-    @Provides
-    fun provideWeatherApiClientBuilder(): Retrofit.Builder = ApiClient.weatherApiClientBuilder()
-
-    @Named("cities")
-    @Singleton
-    @Provides
-    fun provideCitiesApiClientBuilder(): Retrofit.Builder = ApiClient.citesApiClientBuilder()
 
     @Singleton
     @Provides
-    fun provideLocationService(@Named("location") builder: Retrofit.Builder): LocationService
-            = builder.build().create(LocationService::class.java)
+    fun provideLocationService(): LocationService = ApiClient
+            .retrofitClientBuilder(ApiClient.ClientType.Location)
+            .build()
+            .create(LocationService::class.java)
 
     @Singleton
     @Provides
-    fun provideWeatherService(@Named("weather") builder: Retrofit.Builder): WeatherService
-            = builder.build().create(WeatherService::class.java)
+    fun provideWeatherService(): WeatherService = ApiClient
+            .retrofitClientBuilder(ApiClient.ClientType.Weather)
+            .build()
+            .create(WeatherService::class.java)
 
     @Singleton
     @Provides
-    fun provideCitiesService(@Named("cities") builder: Retrofit.Builder): CitiesService
-            = builder.build().create(CitiesService::class.java)
+    fun provideCitiesService(): CitiesService = ApiClient
+            .retrofitClientBuilder(ApiClient.ClientType.City)
+            .build()
+            .create(CitiesService::class.java)
 
     @Singleton
     @Provides
-    fun provideDb(context: Context): TWeatherDb = Room.databaseBuilder(context, TWeatherDb::class.java, "tweather2.db")
+    fun provideDb(context: Context): TWeatherDb = Room
+            .databaseBuilder(context, TWeatherDb::class.java, "tweather2.db")
+            .fallbackToDestructiveMigration()
             .build()
 
     @Singleton
