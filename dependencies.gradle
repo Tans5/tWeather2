@@ -1,16 +1,42 @@
-
 ext.deps = [:]
 def versions = [:]
 versions.dagger = "2.17"
-versions.room = "1.1.1"
-versions.lifecycle = "1.1.1"
-versions.rxJava = "2.2.2"
+versions.room = "2.0.0"
+versions.lifecycle = "2.0.0"
+versions.paging = "2.1.0"
+versions.rxJava = "2.2.7"
+versions.rxKotlin = "2.3.0"
 versions.rxAndroid = "2.1.0"
 versions.retrofit = "2.4.0"
 versions.gson = "2.8.5"
 versions.okhttp = "3.11.0"
+versions.kodein = "5.3.0"
+versions.glide = "4.8.0"
+versions.recyclerview = "1.0.0"
+versions.constraintlayout = "1.1.3"
+versions.appcompat = "1.1.0-alpha02"
+versions.cardview = "1.0.0"
+versions.drawerlayout = "1.0.0"
+versions.coordinatorlayout = "1.0.0-alpha1"
+versions.palette = "1.0.0"
+versions.gridlayout = "1.0.0"
+versions.design = "1.0.0"
+
+def view = [:]
+// androidx view
+view.recyclerview = "androidx.recyclerview:recyclerview:$versions.recyclerview"
+view.constraintlayout = "androidx.constraintlayout:constraintlayout:$versions.constraintlayout"
+view.appcompat = "androidx.appcompat:appcompat:$versions.appcompat"
+view.cardview = "androidx.cardview:cardview:$versions.cardview"
+view.drawerlayout = "androidx.drawerlayout:drawerlayout:$versions.drawerlayout"
+view.coordinatorlayout = "androidx.coordinatorlayout:coordinatorlayout:$versions.coordinatorlayout"
+view.palette = "androidx.palette:palette:$versions.palette"
+view.gridlayout = "androidx.gridlayout:gridlayout:$versions.gridlayout"
+view.design = "com.google.android.material:material:$versions.design"
+ext.deps.view = view
+
 def dagger = [:]
-//Dagger
+// Dagger
 dagger.runtime = "com.google.dagger:dagger:$versions.dagger"
 dagger.android = "com.google.dagger:dagger-android:$versions.dagger"
 dagger.android_support = "com.google.dagger:dagger-android-support:$versions.dagger"
@@ -18,46 +44,73 @@ dagger.compiler = "com.google.dagger:dagger-compiler:$versions.dagger"
 dagger.android_support_compiler = "com.google.dagger:dagger-android-processor:$versions.dagger"
 ext.deps.dagger = dagger
 
-//Room
+// Room
 def room = [:]
-room.runtime = "android.arch.persistence.room:runtime:$versions.room"
-room.compiler = "android.arch.persistence.room:compiler:$versions.room"
-room.rxjava2 = "android.arch.persistence.room:rxjava2:$versions.room"
-room.testing = "android.arch.persistence.room:testing:$versions.room"
+room.runtime = "androidx.room:room-runtime:$versions.room"
+room.common = "androidx.room:room-common:$versions.room"
+room.rxjava2 = "androidx.room:room-rxjava2:$versions.room"
+room.testing = "androidx.room:room-testing:$versions.room"
+room.compiler = "androidx.room:room-compiler:$versions.room"
 ext.deps.room = room
 
-//Lifecycle
+// Lifecycle
 def lifecycle = [:]
-lifecycle.runtime = "android.arch.lifecycle:runtime:$versions.lifecycle"
-lifecycle.extensions = "android.arch.lifecycle:extensions:$versions.lifecycle"
-lifecycle.java8 = "android.arch.lifecycle:common-java8:$versions.lifecycle"
-lifecycle.compiler = "android.arch.lifecycle:compiler:$versions.lifecycle"
+lifecycle.runtime = "androidx.lifecycle:lifecycle-runtime:$versions.lifecycle"
+lifecycle.extensions = "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
+lifecycle.common = "androidx.lifecycle:lifecycle-common:$versions.lifecycle"
+lifecycle.java8 = "androidx.lifecycle:lifecycle-common-java8:$versions.lifecycle"
+lifecycle.livedata = "androidx.lifecycle:lifecycle-livedata:$versions.lifecycle"
+lifecycle.viewmodel = "androidx.lifecycle:lifecycle-viewmodel:$versions.lifecycle"
+lifecycle.compiler = "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
 ext.deps.lifecycle = lifecycle
 
-//RX
+// Paging
+def paging = [:]
+paging.runtime = "androidx.paging:paging-runtime:$versions.paging"
+paging.common = "androidx.paging:paging-common:$versions.paging"
+paging.runtimeKtx = "androidx.paging:paging-runtime-ktx:$versions.paging"
+paging.rxjava2 = "androidx.paging:paging-rxjava2:$versions.paging"
+paging.commonKtx = "androidx.paging:paging-common-ktx:$versions.paging"
+paging.rxkotlin = "androidx.paging:paging-rxjava2-ktx:$versions.paging"
+ext.deps.paging = paging
+
+// RX
 def rxJava = [:]
 rxJava.runtime = "io.reactivex.rxjava2:rxjava:$versions.rxJava"
+rxJava.kotlin = "io.reactivex.rxjava2:rxkotlin:$versions.rxKotlin"
 ext.deps.rxJava = rxJava
 
-//RxAndroid
+// RxAndroid
 def rxAndroid = [:]
 rxAndroid.runtime = "io.reactivex.rxjava2:rxandroid:$versions.rxAndroid"
 ext.deps.rxAndroid = rxAndroid
 
-//Retrofit
+// Retrofit
 def retrofit = [:]
 retrofit.runtime = "com.squareup.retrofit2:retrofit:$versions.retrofit"
 retrofit.converterGson = "com.squareup.retrofit2:converter-gson:$versions.retrofit"
 retrofit.adapterRxJava2 = "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
 ext.deps.retrofit = retrofit
 
-//Gson
+// Gson
 def gson = [:]
 gson.runtime = "com.google.code.gson:gson:$versions.gson"
 ext.deps.gson = gson
 
-//Okhttp
+// Okhttp
 def okhttp = [:]
 okhttp.runtime = "com.squareup.okhttp3:okhttp3:$versions.okhttp"
 okhttp.loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
 ext.deps.okhttp = okhttp
+
+// Kodein
+def kodein = [:]
+kodein.runtime = "org.kodein.di:kodein-di-generic-jvm:$versions.kodein"
+kodein.androidFramework = "org.kodein.di:kodein-di-framework-android-core:$versions.kodein"
+kodein.androidFrameworkSupport = "org.kodein.di:kodein-di-framework-android-support:$versions.kodein"
+ext.deps.kodein = kodein
+
+// Glide
+def glide = [:]
+glide.runtime = "com.github.bumptech.glide:glide:$versions.glide"
+ext.deps.glide = glide

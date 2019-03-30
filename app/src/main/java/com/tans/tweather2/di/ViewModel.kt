@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.example.tanstan.dagger2demo.di
+package com.tans.tweather2.di
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import dagger.MapKey
 import kotlin.reflect.KClass
 

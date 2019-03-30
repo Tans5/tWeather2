@@ -1,6 +1,6 @@
 package com.tans.tweather2.di.module
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import android.content.Context
 import com.tans.tweather2.TWeatherApplication
 import com.tans.tweather2.api.ApiClient

@@ -14,7 +14,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         debug {
@@ -41,43 +41,45 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    //kapt "com.android.databinding:compiler:3.2.0"
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
 
-    //Dagger
+    // Design
+    implementation deps.view.appcompat
+    implementation deps.view.constraintlayout
+    implementation deps.view.design
+
+    // Dagger
     implementation deps.dagger.runtime
     implementation deps.dagger.android
     implementation deps.dagger.android_support
     kapt deps.dagger.compiler
     kapt deps.dagger.android_support_compiler
 
-    //Gson
+    // Gson
     implementation deps.gson.runtime
 
-    //Lifecycle
+    // Lifecycle
     implementation deps.lifecycle.runtime
     implementation deps.lifecycle.extensions
     implementation deps.lifecycle.java8
     kapt deps.lifecycle.compiler
 
-    //Room
+    // Room
     implementation deps.room.runtime
     implementation deps.room.rxjava2
     kapt deps.room.compiler
 
-    //RxJava
+    // RxJava
     implementation deps.rxJava.runtime
     implementation deps.rxAndroid.runtime
 
-    //Retrofit
+    // Retrofit
     implementation deps.retrofit.runtime
     implementation deps.retrofit.converterGson
     implementation deps.retrofit.adapterRxJava2
 
-    //Okhttp
+    // Okhttp
     implementation deps.okhttp.loggingInterceptor
 }

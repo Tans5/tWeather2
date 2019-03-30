@@ -1,6 +1,6 @@
 package com.tans.tweather2.ui.main
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.tans.tweather2.api.ApiResponse
 import com.tans.tweather2.repository.Either
 import com.tans.tweather2.repository.Repository

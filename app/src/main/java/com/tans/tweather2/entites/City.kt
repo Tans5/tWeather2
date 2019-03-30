@@ -1,6 +1,6 @@
 package com.tans.tweather2.entites
 
-import android.arch.persistence.room.Entity
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
 @Entity(primaryKeys = ["id"], tableName = "city")
