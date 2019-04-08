@@ -21,6 +21,8 @@ versions.coordinatorlayout = "1.0.0-alpha1"
 versions.palette = "1.0.0"
 versions.gridlayout = "1.0.0"
 versions.design = "1.0.0"
+versions.moshi = "1.8.0"
+versions.picasso = "2.5.2"
 
 def view = [:]
 // androidx view
@@ -89,6 +91,7 @@ ext.deps.rxAndroid = rxAndroid
 def retrofit = [:]
 retrofit.runtime = "com.squareup.retrofit2:retrofit:$versions.retrofit"
 retrofit.converterGson = "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+retrofit.converterMoshi = "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
 retrofit.adapterRxJava2 = "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
 ext.deps.retrofit = retrofit
 
@@ -97,9 +100,16 @@ def gson = [:]
 gson.runtime = "com.google.code.gson:gson:$versions.gson"
 ext.deps.gson = gson
 
+// Moshi
+def moshi = [:]
+moshi.runtime = "com.squareup.moshi:moshi:$versions.moshi"
+moshi.ktx = "com.squareup.moshi:moshi-kotlin:$versions.moshi"
+moshi.adapters = "com.squareup.moshi:moshi-adapters:$versions.moshi"
+ext.deps.moshi = moshi
+
 // Okhttp
 def okhttp = [:]
-okhttp.runtime = "com.squareup.okhttp3:okhttp3:$versions.okhttp"
+okhttp.runtime = "com.squareup.okhttp3:okhttp:$versions.okhttp"
 okhttp.loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
 ext.deps.okhttp = okhttp
 
@@ -114,3 +124,8 @@ ext.deps.kodein = kodein
 def glide = [:]
 glide.runtime = "com.github.bumptech.glide:glide:$versions.glide"
 ext.deps.glide = glide
+
+// Picasso
+def picasso = [:]
+picasso.runtime = "com.squareup.picasso:picasso:$versions.picasso"
+ext.deps.picasso = picasso

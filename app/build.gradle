@@ -81,5 +81,11 @@ dependencies {
     implementation deps.retrofit.adapterRxJava2
 
     // Okhttp
+    implementation deps.okhttp.runtime
     implementation deps.okhttp.loggingInterceptor
+
+    // Moshi
+    implementation deps.moshi.runtime
+    implementation deps.moshi.ktx
+    implementation deps.moshi.adapters
 }
