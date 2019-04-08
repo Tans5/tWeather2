@@ -1,6 +1,5 @@
 package com.tans.tweather2.api.converter
 
-import com.tans.tweather2.api.ApiResponse
 import com.tans.tweather2.api.service.Cities
 import com.tans.tweather2.entites.City
 import okhttp3.ResponseBody
@@ -12,9 +11,9 @@ import java.lang.reflect.Type
 object CityConverterFactory : Converter.Factory() {
     override fun responseBodyConverter(type: Type, annotations: Array<Annotation>, retrofit: Retrofit)
             : Converter<ResponseBody, *>? {
-        return if (getRawType(type) == ApiResponse::class.java) {
+        return if (getRawType(type) == List::class.java) {
             when (getParameterUpperBound(0, type as ParameterizedType)) {
-                List::class.java -> CityConverter
+                City::class.java -> CityConverter
                 else -> super.responseBodyConverter(type, annotations, retrofit)
             }
         } else {
@@ -24,8 +23,8 @@ object CityConverterFactory : Converter.Factory() {
 
 }
 
-object CityConverter : Converter<ResponseBody, ApiResponse<Cities>> {
-    override fun convert(value: ResponseBody): ApiResponse<Cities> {
+object CityConverter : Converter<ResponseBody, Cities> {
+    override fun convert(value: ResponseBody): Cities {
         val citesString = value.string()
         val cities = citesString.split(",").map {
             val cityString = it.split("|")
@@ -39,11 +38,7 @@ object CityConverter : Converter<ResponseBody, ApiResponse<Cities>> {
                     level = level,
                     cityName = cityName)
         }
-        return if (cities.isEmpty()) {
-            ApiResponse.ApiEmptyResponse()
-        } else {
-            ApiResponse.ApiSuccessResponse(cities)
-        }
+        return cities
     }
 
 }

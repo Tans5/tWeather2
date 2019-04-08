@@ -1,22 +1,13 @@
 package com.tans.tweather2
 
-import android.app.Activity
-import android.app.Application
-import com.tans.tweather2.di.Injector
+import com.tans.tweather2.di.component.DaggerApplicationComponent
 import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import javax.inject.Inject
+import dagger.android.support.DaggerApplication
 
-class TWeatherApplication : Application(), HasActivityInjector {
+class TWeatherApplication : DaggerApplication() {
 
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
-
-    override fun onCreate() {
-        super.onCreate()
-        Injector.appInject(this)
-    }
-
-    override fun activityInjector(): AndroidInjector<Activity> = dispatchingAndroidInjector
+    override fun applicationInjector()
+            : AndroidInjector<out DaggerApplication> = DaggerApplicationComponent.builder()
+            .application(this)
+            .build()
 }

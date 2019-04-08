@@ -1,6 +1,5 @@
 package com.tans.tweather2.api.service
 
-import com.tans.tweather2.api.ApiResponse
 import com.tans.tweather2.entites.Atmosphere
 import com.tans.tweather2.entites.Condition
 import com.tans.tweather2.entites.Forecast
@@ -14,22 +13,22 @@ interface WeatherService {
     @GET("v1/public/yql/")
     fun getAtmosphere(@Query("q") yql: String,
                       @Query("format") format: String = "json",
-                      @Query("env") env: String = "store://datables.org/alltableswithkeys"): Single<ApiResponse<Atmosphere>>
+                      @Query("env") env: String = "store://datables.org/alltableswithkeys"): Single<Atmosphere>
 
     @GET("v1/public/yql/")
     fun getCondition(@Query("q") yql: String,
                      @Query("format") format: String = "json",
-                     @Query("env") env: String = "store://datables.org/alltableswithkeys"): Single<ApiResponse<Condition>>
+                     @Query("env") env: String = "store://datables.org/alltableswithkeys"): Single<Condition>
 
     @GET("v1/public/yql/")
     fun getForecast(@Query("q") yql: String,
                     @Query("format") format: String = "json",
-                    @Query("env") env: String = "store://datables.org/alltableswithkeys"): Single<ApiResponse<Forecast>>
+                    @Query("env") env: String = "store://datables.org/alltableswithkeys"): Single<Forecast>
 
     @GET("v1/public/yql/")
     fun getWind(@Query("q") yql: String,
                 @Query("format") format: String = "json",
-                @Query("env") env: String = "store://datables.org/alltableswithkeys"): Single<ApiResponse<Wind>>
+                @Query("env") env: String = "store://datables.org/alltableswithkeys"): Single<Wind>
 
     companion object {
 
