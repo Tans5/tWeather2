@@ -78,6 +78,7 @@ dependencies {
     // Retrofit
     implementation deps.retrofit.runtime
     implementation deps.retrofit.converterGson
+    implementation deps.retrofit.converterMoshi
     implementation deps.retrofit.adapterRxJava2
 
     // Okhttp
@@ -88,4 +89,5 @@ dependencies {
     implementation deps.moshi.runtime
     implementation deps.moshi.ktx
     implementation deps.moshi.adapters
+    kapt deps.moshi.ktxCodegen
 }

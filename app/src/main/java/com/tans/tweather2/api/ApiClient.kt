@@ -1,13 +1,18 @@
 package com.tans.tweather2.api
 
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tans.tweather2.BuildConfig
 import com.tans.tweather2.api.converter.CityConverterFactory
 import com.tans.tweather2.api.converter.WeatherConverterFactory
+import com.tans.tweather2.api.moshiadapter.AtmosphereAdapter
+import com.tans.tweather2.entites.Atmosphere
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import javax.net.ssl.SSLContext
@@ -16,19 +21,25 @@ import javax.net.ssl.X509TrustManager
 
 object ApiClient {
 
+    private val moshi: Moshi = Moshi
+            .Builder()
+            .add(Atmosphere::class.java, AtmosphereAdapter)
+            .add(KotlinJsonAdapterFactory())
+            .build()
+
     private val baseRetrofitClientBuilder = Retrofit.Builder()
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(createOkHttpClient())
 
     fun retrofitClientBuilder(clientType: ClientType): Retrofit.Builder {
-        val converterFactory: Converter.Factory? = when (clientType) {
-            is ClientType.Weather -> WeatherConverterFactory
-            is ClientType.City -> CityConverterFactory
-            is ClientType.Location -> null
-        }
+//        val converterFactory: Converter.Factory? = when (clientType) {
+//            is ClientType.Weather -> WeatherConverterFactory
+//            is ClientType.City -> CityConverterFactory
+//            is ClientType.Location -> null
+//        }
         return baseRetrofitClientBuilder
                 .baseUrl(clientType.baseUrl)
-                .addConverterFactory(converterFactory)
     }
 
     private fun createOkHttpClient(): OkHttpClient {
