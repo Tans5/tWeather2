@@ -6,12 +6,10 @@ import com.tans.tweather2.TWeatherApplication
 import com.tans.tweather2.api.ApiClient
 import com.tans.tweather2.api.service.CitiesService
 import com.tans.tweather2.api.service.LocationService
-import com.tans.tweather2.api.service.WeatherService
+import com.tans.tweather2.api.service.WeatherService2
 import com.tans.tweather2.db.TWeatherDb
 import dagger.Module
 import dagger.Provides
-import retrofit2.Retrofit
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module(includes = [ViewModelModule::class])
@@ -31,10 +29,10 @@ class ApplicationModule {
 
     @Singleton
     @Provides
-    fun provideWeatherService(): WeatherService = ApiClient
+    fun provideWeatherService(): WeatherService2 = ApiClient
             .retrofitClientBuilder(ApiClient.ClientType.Weather)
             .build()
-            .create(WeatherService::class.java)
+            .create(WeatherService2::class.java)
 
     @Singleton
     @Provides

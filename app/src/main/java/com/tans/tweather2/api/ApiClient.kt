@@ -1,20 +1,19 @@
 package com.tans.tweather2.api
 
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tans.tweather2.BuildConfig
-import com.tans.tweather2.api.converter.CityConverterFactory
-import com.tans.tweather2.api.converter.WeatherConverterFactory
 import com.tans.tweather2.api.moshiadapter.AtmosphereAdapter
-import com.tans.tweather2.entites.Atmosphere
+import com.tans.tweather2.entites.Atmosphere2
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
+import java.util.*
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.X509TrustManager
@@ -23,7 +22,7 @@ object ApiClient {
 
     private val moshi: Moshi = Moshi
             .Builder()
-            .add(Atmosphere::class.java, AtmosphereAdapter)
+            .add(Date::class.java, Rfc3339DateJsonAdapter())
             .add(KotlinJsonAdapterFactory())
             .build()
 
@@ -70,9 +69,8 @@ object ApiClient {
     }
 
     sealed class ClientType(val tag: String, val baseUrl: String) {
-        object Location : ClientType(tag = "location", baseUrl = "http://com.tans.tweather2.api.map.baidu.com/")
         object City : ClientType(tag = "city", baseUrl = "http://www.weather.com.cn/")
-        object Weather : ClientType(tag = "weather", baseUrl = "https://query.yahooapis.com/")
+        object Weather : ClientType(tag = "weather", baseUrl = "https://weather-ydn-yql.media.yahoo.com/")
     }
 
 }

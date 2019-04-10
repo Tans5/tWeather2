@@ -2,7 +2,7 @@ package com.tans.tweather2.entites
 
 import com.google.gson.annotations.SerializedName
 
-data class Forecast(@field:SerializedName("channel") val forecastItems: List<ForecastItem>)
+data class Forecast2(@field:SerializedName("channel") val forecastItems: List<ForecastItem>)
 
 data class ForecastItem(@field:SerializedName("item") val item: ForecastItem1)
 data class ForecastItem1(@field:SerializedName("forecast") val forecast: ForecastItem2)

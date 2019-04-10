@@ -33,7 +33,8 @@ class ApiTest {
                 "oauth_signature_method=HMAC-SHA1",
                 "oauth_timestamp=$timestamp",
                 "oauth_version=1.0",
-                "location=${URLEncoder.encode("sunnyvale,ca", "UTF-8")}",
+                "location=${URLEncoder.encode("成都", "UTF-8")}",
+                "u=c",
                 "format=json").sorted()
 
         val signatureString: String = params.withIndex().fold("GET&${URLEncoder.encode(url, "UTF-8")}&") { last, item ->
@@ -60,14 +61,14 @@ class ApiTest {
         val okHttpClient = OkHttpClient.Builder().build()
 
         val request = Request.Builder()
-                .url("$url?location=sunnyvale,ca&format=json")
+                .url("$url?location=成都&format=json&u=c")
                 .addHeader("Authorization", authLine)
                 .addHeader("X-Yahoo-App-Id", appId)
                 .addHeader("Content-Type", "application/json")
                 .build()
 
         val response = okHttpClient.newCall(request).execute()
-        println(response)
+        println(response.body()?.string())
 
     }
 

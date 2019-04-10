@@ -2,7 +2,7 @@ package com.tans.tweather2.entites
 
 import com.google.gson.annotations.SerializedName
 
-data class Atmosphere(
+data class Atmosphere2(
         @field:SerializedName("humidity")
         val humidity: Int,
         @field:SerializedName("pressure")

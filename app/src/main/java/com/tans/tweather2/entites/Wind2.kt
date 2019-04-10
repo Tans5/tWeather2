@@ -2,7 +2,7 @@ package com.tans.tweather2.entites
 
 import com.google.gson.annotations.SerializedName
 
-data class Wind(
+data class Wind2(
         @field:SerializedName("chill")
         val chill: Int,
         @field:SerializedName("direction")

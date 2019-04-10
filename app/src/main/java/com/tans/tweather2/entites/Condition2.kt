@@ -2,7 +2,7 @@ package com.tans.tweather2.entites
 
 import com.google.gson.annotations.SerializedName
 
-data class Condition(
+data class Condition2(
         @field:SerializedName("code")
         val code: Int,
         @field:SerializedName("date")
