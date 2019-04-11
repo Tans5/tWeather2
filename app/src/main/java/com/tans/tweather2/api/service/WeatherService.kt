@@ -69,7 +69,13 @@ interface WeatherService {
             val oauthNonce = ByteArray(32).let {
                 val rand = Random()
                 rand.nextBytes(it)
-                String(it).replace("\\W".toRegex(), "")
+                String(it, Charsets.UTF_8).replace("\\W".toRegex(), "").fold("") { lastR, c ->
+                    if (c <= '\u001f' && c != '\t' || c >= '\u007f') {
+                        "${lastR}t"
+                    } else {
+                        "$lastR$c"
+                    }
+                }
             }
 
             val params: List<String> = mutableListOf("oauth_consumer_key=$consumerKey",
@@ -106,8 +112,9 @@ interface WeatherService {
                 mac.init(it)
                 val rawHMAC = mac.doFinal(signatureString.toByteArray())
                 // Base64.encodeToString(rawHMAC, Base64.DEFAULT)
-                val encoder = java.util.Base64.getEncoder()
-                encoder.encodeToString(rawHMAC)
+                String(Base64.encode(rawHMAC, Base64.NO_WRAP), Charsets.UTF_8)
+//                val encoder = java.util.Base64.getEncoder()
+//                encoder.encodeToString(rawHMAC)
             }
 
             return "OAuth " +

@@ -12,7 +12,7 @@ class MainViewModel @Inject constructor(private val repository: WeatherRepositor
 
     fun updateWeather() {
 
-        weatherService.getWeather(WeatherService.Companion.WeatherRequest.CityNameRequest(cityName = "chengdu"))
+        weatherService.getWeather(WeatherService.Companion.WeatherRequest.CityNameRequest(cityName = "成都"))
                 .switchThread()
                 .doOnSuccess {
                     println(it)
