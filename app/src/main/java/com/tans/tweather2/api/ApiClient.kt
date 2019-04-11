@@ -4,8 +4,6 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tans.tweather2.BuildConfig
-import com.tans.tweather2.api.moshiadapter.AtmosphereAdapter
-import com.tans.tweather2.entites.Atmosphere2
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -32,11 +30,6 @@ object ApiClient {
             .client(createOkHttpClient())
 
     fun retrofitClientBuilder(clientType: ClientType): Retrofit.Builder {
-//        val converterFactory: Converter.Factory? = when (clientType) {
-//            is ClientType.Weather -> WeatherConverterFactory
-//            is ClientType.City -> CityConverterFactory
-//            is ClientType.Location -> null
-//        }
         return baseRetrofitClientBuilder
                 .baseUrl(clientType.baseUrl)
     }

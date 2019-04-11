@@ -23,7 +23,7 @@ data class CurrentObservation(val wind: Wind,
                               val atmosphere: Atmosphere,
                               val astronomy: Astronomy,
                               val condition: Condition,
-                              val pubDate: Date)
+                              val pubDate: Long)
 
 @JsonClass(generateAdapter = true)
 data class Wind(val chill: Int,
@@ -32,7 +32,7 @@ data class Wind(val chill: Int,
 
 @JsonClass(generateAdapter = true)
 data class Atmosphere(val humidity: Int,
-                      val visibility: Int,
+                      val visibility: Float,
                       val pressure: Float,
                       val rising: Int)
 
@@ -47,7 +47,7 @@ data class Condition(val text: String,
 
 @JsonClass(generateAdapter = true)
 data class Forecast(val day: String,
-                    val date: Date,
+                    val date: Long,
                     val low: Int,
                     val high: Int,
                     val text: String,

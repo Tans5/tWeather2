@@ -1,5 +1,8 @@
 package com.tans.tweather2
 
+import com.tans.tweather2.api.ApiClient
+import com.tans.tweather2.api.service.WeatherService
+import com.tans.tweather2.api.service.getWeather
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.junit.Test
@@ -12,7 +15,7 @@ import javax.crypto.spec.SecretKeySpec
 class ApiTest {
 
     @Test
-    fun weatherTest() {
+    fun weatherTest2() {
 
         val appId = "LrwGbl7e"
         val consumerKey = "dj0yJmk9b1BOT3ZOU212YmZlJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWQz"
@@ -70,6 +73,20 @@ class ApiTest {
         val response = okHttpClient.newCall(request).execute()
         println(response.body()?.string())
 
+    }
+
+    @Test
+    fun weatherTest() {
+        val service = ApiClient.retrofitClientBuilder(ApiClient.ClientType.Weather)
+                .build()
+                .create(WeatherService::class.java)
+        val weather = service.getWeather(weatherRequest = WeatherService.Companion.WeatherRequest.CityNameRequest(cityName = "成都"))
+                .doOnError {
+                    println("error: $it")
+                }
+                .blockingGet()
+
+        println(weather)
     }
 
 }

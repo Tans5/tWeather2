@@ -5,8 +5,7 @@ import android.content.Context
 import com.tans.tweather2.TWeatherApplication
 import com.tans.tweather2.api.ApiClient
 import com.tans.tweather2.api.service.CitiesService
-import com.tans.tweather2.api.service.LocationService
-import com.tans.tweather2.api.service.WeatherService2
+import com.tans.tweather2.api.service.WeatherService
 import com.tans.tweather2.db.TWeatherDb
 import dagger.Module
 import dagger.Provides
@@ -22,17 +21,10 @@ class ApplicationModule {
 
     @Singleton
     @Provides
-    fun provideLocationService(): LocationService = ApiClient
-            .retrofitClientBuilder(ApiClient.ClientType.Location)
-            .build()
-            .create(LocationService::class.java)
-
-    @Singleton
-    @Provides
-    fun provideWeatherService(): WeatherService2 = ApiClient
+    fun provideWeatherService(): WeatherService = ApiClient
             .retrofitClientBuilder(ApiClient.ClientType.Weather)
             .build()
-            .create(WeatherService2::class.java)
+            .create(WeatherService::class.java)
 
     @Singleton
     @Provides
