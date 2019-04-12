@@ -15,6 +15,12 @@ interface CityDao {
     @Query("select * from city where id = :id")
     fun queryById(id: String): Single<List<City>>
 
-    @Query("select * from city where parentId = :parentId")
+    @Query("select * from city where parent_id = :parentId")
     fun queryByParentId(parentId: String): Single<List<City>>
+
+    @Query("select count(*) from city where favor_order > 0")
+    fun favorCitySize(): Single<Int>
+
+    @Query("select * from city where favor_order > 0 order by favor_order")
+    fun queryFavorCities(): Single<List<City>>
 }

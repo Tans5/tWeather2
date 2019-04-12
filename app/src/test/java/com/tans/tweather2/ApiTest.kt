@@ -1,6 +1,7 @@
 package com.tans.tweather2
 
 import com.tans.tweather2.api.ApiClient
+import com.tans.tweather2.api.service.CitiesService
 import com.tans.tweather2.api.service.WeatherService
 import com.tans.tweather2.api.service.getWeather
 import okhttp3.OkHttpClient
@@ -87,6 +88,19 @@ class ApiTest {
                 .blockingGet()
 
         println(weather)
+    }
+
+    @Test
+    fun citiesTest() {
+        val service = ApiClient.retrofitClientBuilder(ApiClient.ClientType.City)
+                .build()
+                .create(CitiesService::class.java)
+
+        val cities = service.getCities()
+                .doOnError { println(it) }
+                .blockingGet()
+
+        println(cities)
     }
 
 }

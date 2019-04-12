@@ -1,9 +1,13 @@
 package com.tans.tweather2.api
 
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tans.tweather2.BuildConfig
+import com.tans.tweather2.api.moshiadapter.CitiesAdapter
+import com.tans.tweather2.api.service.Cities
+import com.tans.tweather2.entites.City
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -21,6 +25,7 @@ object ApiClient {
     private val moshi: Moshi = Moshi
             .Builder()
             .add(Date::class.java, Rfc3339DateJsonAdapter())
+            // .add(Types.newParameterizedType(List::class.java, City::class.java), CitiesAdapter)
             .add(KotlinJsonAdapterFactory())
             .build()
 
@@ -37,6 +42,7 @@ object ApiClient {
     private fun createOkHttpClient(): OkHttpClient {
         val clientBuilder = OkHttpClient.Builder()
                 .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .addInterceptor(CityInterceptor)
         return if (BuildConfig.isDebug) {
             clientBuilder.sslSocketFactory(createUnsafeSslSocketFactory(), createUnsafeTrustManager())
                     .build()
