@@ -1,12 +1,19 @@
 package com.tans.tweather2.entites
 
+import androidx.room.Entity
+import androidx.room.TypeConverters
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.tans.tweather2.db.RoomConverter
 
 @JsonClass(generateAdapter = true)
-data class Weather(val location: Location,
-                   @Json(name = "current_observation") val currentObservation: CurrentObservation,
-                   val forecasts: List<Forecast>)
+@Entity(primaryKeys = ["woeid"], tableName = "weather")
+@TypeConverters(RoomConverter::class)
+data class Weather(
+        val woeid: Long = -1,
+        val location: Location,
+        @Json(name = "current_observation") val currentObservation: CurrentObservation,
+        val forecasts: List<Forecast>)
 
 @JsonClass(generateAdapter = true)
 data class Location(val woeid: Long,

@@ -22,7 +22,7 @@ import javax.net.ssl.X509TrustManager
 
 object ApiClient {
 
-    private val moshi: Moshi = Moshi
+    val moshi: Moshi = Moshi
             .Builder()
             .add(Date::class.java, Rfc3339DateJsonAdapter())
             // .add(Types.newParameterizedType(List::class.java, City::class.java), CitiesAdapter)

@@ -1,6 +1,9 @@
 package com.tans.tweather2.db
 
 import androidx.room.TypeConverter
+import com.squareup.moshi.Types
+import com.tans.tweather2.api.ApiClient
+import com.tans.tweather2.entites.*
 
 object RoomConverter {
 
@@ -35,4 +38,45 @@ object RoomConverter {
     @TypeConverter
     @JvmStatic
     fun stringToDouble(value: String?): Double? = value?.toDouble()
+
+
+    @TypeConverter
+    @JvmStatic
+    fun weatherToString(value: Weather?)
+            : String? = WeatherJsonAdapter(ApiClient.moshi).toJson(value)
+
+    @TypeConverter
+    @JvmStatic
+    fun stringToWeather(value: String?)
+            : Weather? = WeatherJsonAdapter(ApiClient.moshi).fromJson(value ?: "")
+
+    @TypeConverter
+    @JvmStatic
+    fun locationToString(value: Location?)
+            : String? = LocationJsonAdapter(ApiClient.moshi).toJson(value)
+
+    @TypeConverter
+    @JvmStatic
+    fun stringToLocation(value: String?)
+            : Location? = LocationJsonAdapter(ApiClient.moshi).fromJson(value ?: "")
+
+    @TypeConverter
+    @JvmStatic
+    fun currentObservationToString(value: CurrentObservation?)
+            : String? = CurrentObservationJsonAdapter(ApiClient.moshi).toJson(value)
+
+    @TypeConverter
+    @JvmStatic
+    fun stringToCurrentObservation(value: String?)
+            : CurrentObservation? = CurrentObservationJsonAdapter(ApiClient.moshi).fromJson(value ?: "")
+
+    @TypeConverter
+    @JvmStatic
+    fun forecastsToString(value: List<Forecast>?)
+            : String? = ApiClient.moshi.adapter<List<Forecast>>(Types.newParameterizedType(List::class.java, Forecast::class.java)).toJson(value)
+
+    @TypeConverter
+    @JvmStatic
+    fun stringToForecasts(value: String?)
+            : List<Forecast>? = ApiClient.moshi.adapter<List<Forecast>>(Types.newParameterizedType(List::class.java, Forecast::class.java)).fromJson(value ?: "")
 }

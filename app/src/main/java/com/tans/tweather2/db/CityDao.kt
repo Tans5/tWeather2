@@ -4,23 +4,30 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.tans.tweather2.api.service.Cities
 import com.tans.tweather2.entites.City
-import io.reactivex.Single
+import io.reactivex.Maybe
 
 @Dao
 interface CityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(city: City)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(cities: Cities)
+
     @Query("select * from city where id = :id")
-    fun queryById(id: String): Single<List<City>>
+    fun queryById(id: String): Maybe<Cities>
 
     @Query("select * from city where parent_id = :parentId")
-    fun queryByParentId(parentId: String): Single<List<City>>
+    fun queryByParentId(parentId: String): Maybe<Cities>
+
+    @Query("select * from city where parent_id = null")
+    fun queryRootCites(): Maybe<Cities>
 
     @Query("select count(*) from city where favor_order > 0")
-    fun favorCitySize(): Single<Int>
+    fun favorCitySize(): Maybe<Int>
 
     @Query("select * from city where favor_order > 0 order by favor_order")
-    fun queryFavorCities(): Single<List<City>>
+    fun queryFavorCities(): Maybe<Cities>
 }
