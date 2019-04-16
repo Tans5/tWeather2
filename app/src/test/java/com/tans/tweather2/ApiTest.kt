@@ -87,6 +87,7 @@ class ApiTest {
                 }
                 .blockingGet()
 
+
         println(weather)
     }
 

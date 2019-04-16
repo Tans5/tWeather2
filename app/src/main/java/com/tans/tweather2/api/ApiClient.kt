@@ -6,6 +6,7 @@ import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tans.tweather2.BuildConfig
 import com.tans.tweather2.api.moshiadapter.CitiesAdapter
+import com.tans.tweather2.api.moshiadapter.DateIntAdapter
 import com.tans.tweather2.api.service.Cities
 import com.tans.tweather2.entites.City
 import okhttp3.OkHttpClient
@@ -24,7 +25,7 @@ object ApiClient {
 
     val moshi: Moshi = Moshi
             .Builder()
-            .add(Date::class.java, Rfc3339DateJsonAdapter())
+             .add(Date::class.java, DateIntAdapter)
             // .add(Types.newParameterizedType(List::class.java, City::class.java), CitiesAdapter)
             .add(KotlinJsonAdapterFactory())
             .build()

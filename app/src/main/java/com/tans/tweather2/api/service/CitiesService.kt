@@ -10,5 +10,5 @@ typealias Cities = List<City>
 interface CitiesService {
 
     @GET("data/list3/city{parentCode}.xml")
-    fun getCities(@Path("parentCode") parentCode: String? = null): Single<Cities>
+    fun getCities(@Path("parentCode") parentCode: String = ""): Single<Cities>
 }

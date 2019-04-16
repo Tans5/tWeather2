@@ -25,7 +25,7 @@ class CitiesRepository @Inject constructor(private val citiesService: CitiesServ
         citiesDao.queryByParentId(parentId = parentId.toString())
     }.flatMapSingle { cities ->
         if (cities.isEmpty()) {
-            citiesService.getCities(parentCode = parentId?.toString())
+            citiesService.getCities(parentCode = parentId?.toString() ?: "")
                     .map { cities ->
                         val fixedCities = cities.map { it.copy(parentId = parentId, level = level) }
                         citiesDao.insert(fixedCities)

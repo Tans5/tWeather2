@@ -5,6 +5,7 @@ import androidx.room.TypeConverters
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.tans.tweather2.db.RoomConverter
+import java.util.*
 
 @JsonClass(generateAdapter = true)
 @Entity(primaryKeys = ["woeid"], tableName = "weather")
@@ -29,7 +30,7 @@ data class CurrentObservation(val wind: Wind,
                               val atmosphere: Atmosphere,
                               val astronomy: Astronomy,
                               val condition: Condition,
-                              val pubDate: Long)
+                              val pubDate: Date)
 
 @JsonClass(generateAdapter = true)
 data class Wind(val chill: Int,
@@ -53,7 +54,7 @@ data class Condition(val text: String,
 
 @JsonClass(generateAdapter = true)
 data class Forecast(val day: String,
-                    val date: Long,
+                    val date: Date,
                     val low: Int,
                     val high: Int,
                     val text: String,

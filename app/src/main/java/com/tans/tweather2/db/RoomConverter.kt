@@ -79,4 +79,25 @@ object RoomConverter {
     @JvmStatic
     fun stringToForecasts(value: String?)
             : List<Forecast>? = ApiClient.moshi.adapter<List<Forecast>>(Types.newParameterizedType(List::class.java, Forecast::class.java)).fromJson(value ?: "")
+
+    @TypeConverter
+    @JvmStatic
+    fun imagesToString(value: List<Image>?)
+            : String? = ApiClient.moshi.adapter<List<Image>>(Types.newParameterizedType(List::class.java, Image::class.java)).toJson(value)
+
+    @TypeConverter
+    @JvmStatic
+    fun stringToImages(value: String?)
+            : List<Image>? = ApiClient.moshi.adapter<List<Image>>(Types.newParameterizedType(List::class.java, Image::class.java)).fromJson(value)
+
+    @TypeConverter
+    @JvmStatic
+    fun stringToToolTops(value: String?)
+            : ToolTips? = ToolTipsJsonAdapter(ApiClient.moshi).fromJson(value)
+
+    @TypeConverter
+    @JvmStatic
+    fun toolTopsToString(value: ToolTips?)
+            : String? = ToolTipsJsonAdapter(ApiClient.moshi).toJson(value)
+
 }
