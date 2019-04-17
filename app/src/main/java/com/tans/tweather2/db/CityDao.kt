@@ -22,7 +22,7 @@ interface CityDao {
     @Query("select * from city where parent_id = :parentId")
     fun queryByParentId(parentId: String): Maybe<Cities>
 
-    @Query("select * from city where parent_id = null")
+    @Query("select * from city where parent_id = -1")
     fun queryRootCites(): Maybe<Cities>
 
     @Query("select count(*) from city where favor_order > 0")

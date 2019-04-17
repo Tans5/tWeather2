@@ -7,6 +7,7 @@ import com.tans.tweather2.entites.City
 import com.tans.tweather2.ui.BaseActivity
 import com.tans.tweather2.utils.switchThread
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -20,16 +21,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class.java) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         // viewModel.testCities()
-        Completable.fromAction {
-            cityDao.insert(City(id = -1, cityName = "成都"))
-        }.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError { e ->
-                    println(e)
+        cityDao.queryRootCites()
+                .switchThread()
+                .doOnSuccess {
+                    println(it)
                 }
                 .subscribe()
-//        val city = cityDao.queryRootCites().switchThread().blockingGet()
-//
-//        println(city)
     }
 }

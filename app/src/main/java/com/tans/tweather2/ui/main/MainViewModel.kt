@@ -12,6 +12,9 @@ class MainViewModel @Inject constructor(private val weatherRepository: WeatherRe
     fun testCities() {
         citiesRepository.getRootCites()
                 .switchThread()
+                .doOnSuccess {
+                    println(it)
+                }
                 .bindViewModelLife()
     }
 
