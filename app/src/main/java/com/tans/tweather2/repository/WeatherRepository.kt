@@ -54,8 +54,7 @@ class WeatherRepository @Inject constructor(
     }
 
     private fun updateWeatherLocal(weather: Weather): Completable = Completable.fromAction {
-        val fixedWeather = weather.copy(woeid = weather.location.woeid)
-        weatherDao.insert(fixedWeather)
+        weatherDao.insert(weather)
     }
 
     private fun updateCityLocal(city: City): Completable {

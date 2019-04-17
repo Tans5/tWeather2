@@ -15,8 +15,10 @@ class ImagesRepository @Inject constructor(private val bingService: BingService,
                                            private val imagesDao: ImagesDao) {
 
 
+    fun getImages(): Single<Images> = getTodayImagesLocal()
+            .switchIfEmpty(getImagesRemote())
 
-    fun getImagesRemote(): Single<Images> = bingService.getImages()
+    private fun getImagesRemote(): Single<Images> = bingService.getImages()
             .zipWith(formatImageDateString(Date()))
             .map { (images, dateString) ->
                 images.copy(dateString = dateString)
@@ -25,8 +27,7 @@ class ImagesRepository @Inject constructor(private val bingService: BingService,
                 insertImages(images).toSingleDefault(images)
             }
 
-
-    fun getTodayImagesLocal(): Maybe<Images> = formatImageDateString(Date())
+    private fun getTodayImagesLocal(): Maybe<Images> = formatImageDateString(Date())
             .flatMapMaybe { todayDateString -> imagesDao.queryImagesByDateString(todayDateString) }
 
     private fun insertImages(images: Images): Completable = Completable.fromCallable {
