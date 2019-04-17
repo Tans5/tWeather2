@@ -1,6 +1,7 @@
 package com.tans.tweather2
 
 import com.tans.tweather2.api.ApiClient
+import com.tans.tweather2.api.service.BingService
 import com.tans.tweather2.api.service.CitiesService
 import com.tans.tweather2.api.service.WeatherService
 import com.tans.tweather2.api.service.getWeather
@@ -102,6 +103,21 @@ class ApiTest {
                 .blockingGet()
 
         println(cities)
+    }
+
+    @Test
+    fun imagesTest() {
+
+        val service = ApiClient.retrofitClientBuilder(ApiClient.ClientType.Bing)
+                .build()
+                .create(BingService::class.java)
+
+        val images = service.getImages()
+                .doOnError { println(it) }
+                .blockingGet()
+
+        println(images)
+
     }
 
 }

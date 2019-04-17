@@ -39,8 +39,12 @@ class WeatherRepository @Inject constructor(
         }
 
     }.flatMap { weather ->
-        Completable.merge(listOf(updateCityLocal(weather = weather, city = city), updateWeatherLocal(weather)))
-                .toSingleDefault(weather)
+        val fixedWeather = weather.copy(woeid = weather.location.woeid)
+        val fixedCity = city.copy(woeid = weather.location.woeid,
+                lat = weather.location.lat,
+                lon = weather.location.long)
+        Completable.merge(listOf(updateCityLocal(city = fixedCity), updateWeatherLocal(fixedWeather)))
+                .toSingleDefault(fixedWeather)
     }
 
     fun getWeatherLocal(city: City): Maybe<Weather> = if (city.woeid == null) {
@@ -54,11 +58,8 @@ class WeatherRepository @Inject constructor(
         weatherDao.insert(fixedWeather)
     }
 
-    private fun updateCityLocal(weather: Weather, city: City): Completable {
-        val fixedCity = city.copy(woeid = weather.location.woeid,
-                lat = weather.location.lat,
-                lon = weather.location.long)
-        return citiesRepository.updateCity(fixedCity)
+    private fun updateCityLocal(city: City): Completable {
+        return citiesRepository.updateCity(city)
     }
 
 }

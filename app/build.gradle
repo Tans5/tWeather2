@@ -73,6 +73,7 @@ dependencies {
 
     // RxJava
     implementation deps.rxJava.runtime
+    implementation deps.rxJava.kotlin
     implementation deps.rxAndroid.runtime
 
     // Retrofit
@@ -90,4 +91,7 @@ dependencies {
     implementation deps.moshi.ktx
     implementation deps.moshi.adapters
     kapt deps.moshi.ktxCodegen
+
+    // Picasso
+    implementation deps.picasso.runtime
 }

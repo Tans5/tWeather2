@@ -15,4 +15,6 @@ abstract class TWeatherDb : RoomDatabase() {
     abstract fun getCityDao(): CityDao
 
     abstract fun getWeatherDao(): WeatherDao
+
+    abstract fun getImageDao(): ImagesDao
 }

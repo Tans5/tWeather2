@@ -47,4 +47,8 @@ class ApplicationModule {
     @Singleton
     @Provides
     fun provideWeatherDao(db: TWeatherDb) = db.getWeatherDao()
+
+    @Singleton
+    @Provides
+    fun provideImagesDao(db: TWeatherDb) = db.getImageDao()
 }

@@ -71,7 +71,7 @@ object ApiClient {
     sealed class ClientType(val tag: String, val baseUrl: String) {
         object City : ClientType(tag = "city", baseUrl = "http://www.weather.com.cn/")
         object Weather : ClientType(tag = "weather", baseUrl = "https://weather-ydn-yql.media.yahoo.com/")
-        object Bing : ClientType(tag = "bing", baseUrl = "https://cn.bing.com/HPImageArchive.aspx?idx=0&n=1&format=js")
+        object Bing : ClientType(tag = "bing", baseUrl = "https://cn.bing.com/")
     }
 
 }
