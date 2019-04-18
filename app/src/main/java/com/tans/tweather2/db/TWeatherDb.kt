@@ -8,7 +8,7 @@ import com.tans.tweather2.entites.Weather
 
 @Database(
         entities = [City::class, Weather::class, Images::class],
-        version = 2,
+        version = 3,
         exportSchema = false
 )
 abstract class TWeatherDb : RoomDatabase() {

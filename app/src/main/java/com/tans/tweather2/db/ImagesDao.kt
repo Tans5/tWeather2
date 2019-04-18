@@ -13,7 +13,10 @@ interface ImagesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(images: Images)
 
-    @Query("select * from images where date_string = :dateString")
-    fun queryImagesByDateString(dateString: String): Maybe<Images>
+    @Query("select * from images where date_long = :dateLong")
+    fun queryImagesByDateString(dateLong: Long): Maybe<Images>
+
+    @Query("select * from images where date_long = (select max(date_long) from images)")
+    fun queryLatestImages(): Maybe<Images>
 
 }

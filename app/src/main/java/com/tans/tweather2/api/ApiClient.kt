@@ -1,14 +1,9 @@
 package com.tans.tweather2.api
 
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
-import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tans.tweather2.BuildConfig
-import com.tans.tweather2.api.moshiadapter.CitiesAdapter
 import com.tans.tweather2.api.moshiadapter.DateIntAdapter
-import com.tans.tweather2.api.service.Cities
-import com.tans.tweather2.entites.City
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

@@ -15,17 +15,8 @@ import javax.inject.Inject
 
 class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class.java) {
 
-    @Inject lateinit var cityDao: CityDao
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        // viewModel.testCities()
-        cityDao.queryRootCites()
-                .switchThread()
-                .doOnSuccess {
-                    println(it)
-                }
-                .subscribe()
     }
 }

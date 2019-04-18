@@ -4,6 +4,7 @@ import androidx.room.Room
 import android.content.Context
 import com.tans.tweather2.TWeatherApplication
 import com.tans.tweather2.api.ApiClient
+import com.tans.tweather2.api.service.BingService
 import com.tans.tweather2.api.service.CitiesService
 import com.tans.tweather2.api.service.WeatherService
 import com.tans.tweather2.db.TWeatherDb
@@ -32,6 +33,13 @@ class ApplicationModule {
             .retrofitClientBuilder(ApiClient.ClientType.City)
             .build()
             .create(CitiesService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideBingService(): BingService = ApiClient
+            .retrofitClientBuilder(ApiClient.ClientType.Bing)
+            .build()
+            .create(BingService::class.java)
 
     @Singleton
     @Provides

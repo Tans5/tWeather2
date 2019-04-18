@@ -26,11 +26,11 @@ class WeatherRepository @Inject constructor(
             .getWeather(WeatherService.Companion.WeatherRequest.CoordinateRequest(lat = lat, long = long))
 
     fun getWeatherRemote(city: City): Single<Weather> = when {
-        city.woeid != null -> {
+        city.woeid != -1L -> {
             weatherService.getWeather(WeatherService.Companion.WeatherRequest.WoeidReqeust(woeid = city.woeid))
         }
 
-        (city.lat != null && city.lon != null) -> {
+        (city.lat != -1.0 && city.lon != -1.0) -> {
             weatherService.getWeather(WeatherService.Companion.WeatherRequest.CoordinateRequest(lat = city.lat, long = city.lon))
         }
 
@@ -47,10 +47,10 @@ class WeatherRepository @Inject constructor(
                 .toSingleDefault(fixedWeather)
     }
 
-    fun getWeatherLocal(city: City): Maybe<Weather> = if (city.woeid == null) {
+    fun getWeatherLocal(city: City): Maybe<Weather> = if (city.woeid == -1L) {
         Maybe.empty()
     } else {
-        weatherDao.queryWeatherByWoeid(city.woeid.toString())
+        weatherDao.queryWeatherByWoeid(city.woeid)
     }
 
     private fun updateWeatherLocal(weather: Weather): Completable = Completable.fromAction {

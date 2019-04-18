@@ -1,6 +1,5 @@
 package com.tans.tweather2.entites
 
-import androidx.annotation.Nullable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.TypeConverters

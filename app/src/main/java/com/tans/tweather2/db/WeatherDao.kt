@@ -14,5 +14,5 @@ interface WeatherDao {
     fun insert(weather: Weather)
 
     @Query("select * from weather where woeid = :woeid")
-    fun queryWeatherByWoeid(woeid: String): Maybe<Weather>
+    fun queryWeatherByWoeid(woeid: Long): Maybe<Weather>
 }

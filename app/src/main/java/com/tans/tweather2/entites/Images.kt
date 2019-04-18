@@ -7,10 +7,10 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.tans.tweather2.db.RoomConverter
 
-@Entity(tableName = "images", primaryKeys = ["date_string"])
+@Entity(tableName = "images", primaryKeys = ["date_long"])
 @TypeConverters(RoomConverter::class)
 @JsonClass(generateAdapter = true)
-data class Images(@ColumnInfo(name = "date_string") val dateString: String = "",
+data class Images(@ColumnInfo(name = "date_long") val dateLong: Long = -1,
                   val images: List<Image>,
                   @ColumnInfo(name = "tool_tips") @Json(name = "tooltips") val toolTips: ToolTips)
 
