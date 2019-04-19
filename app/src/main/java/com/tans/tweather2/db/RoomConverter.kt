@@ -88,7 +88,7 @@ object RoomConverter {
     @TypeConverter
     @JvmStatic
     fun stringToImages(value: String?)
-            : List<Image>? = ApiClient.moshi.adapter<List<Image>>(Types.newParameterizedType(List::class.java, Image::class.java)).fromJson(value)
+            : List<Image>? = ApiClient.moshi.adapter<List<Image>>(Types.newParameterizedType(List::class.java, Image::class.java)).fromJson(value ?: "")
 
     @TypeConverter
     @JvmStatic

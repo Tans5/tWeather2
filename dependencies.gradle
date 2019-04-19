@@ -23,6 +23,7 @@ versions.gridlayout = "1.0.0"
 versions.design = "1.0.0"
 versions.moshi = "1.8.0"
 versions.picasso = "2.5.2"
+versions.stetho = "1.5.1"
 
 def view = [:]
 // androidx view
@@ -130,3 +131,9 @@ ext.deps.glide = glide
 def picasso = [:]
 picasso.runtime = "com.squareup.picasso:picasso:$versions.picasso"
 ext.deps.picasso = picasso
+
+// Stetho
+def stetho = [:]
+stetho.runtime = "com.facebook.stetho:stetho:$versions.stetho"
+stetho.okhttp = "com.facebook.stetho:stetho-okhttp3:$versions.stetho"
+ext.deps.stetho = stetho

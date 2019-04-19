@@ -17,6 +17,7 @@ class ImagesRepository @Inject constructor(private val bingService: BingService,
 
 
     fun getImages(): Observable<Images> = getLatestImagesLocal()
+            .switchIfEmpty(getImagesRemote())
             .flatMapObservable { images ->
                 dateLongIsToday(images.dateLong)
                         .flatMapObservable { isToday ->

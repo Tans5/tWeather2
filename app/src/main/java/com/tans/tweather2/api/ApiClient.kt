@@ -1,5 +1,6 @@
 package com.tans.tweather2.api
 
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tans.tweather2.BuildConfig
@@ -40,6 +41,7 @@ object ApiClient {
                 .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .addInterceptor(CityInterceptor)
         return if (BuildConfig.isDebug) {
+            clientBuilder.addNetworkInterceptor(StethoInterceptor())
             clientBuilder.sslSocketFactory(createUnsafeSslSocketFactory(), createUnsafeTrustManager())
                     .build()
         } else {

@@ -45,6 +45,10 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
 
+    // Stetho
+    debugImplementation deps.stetho.runtime
+    implementation deps.stetho.okhttp
+
     // Design
     implementation deps.view.appcompat
     implementation deps.view.constraintlayout
