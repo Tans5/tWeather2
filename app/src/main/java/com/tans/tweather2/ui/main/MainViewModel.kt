@@ -10,7 +10,16 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(private val weatherRepository: WeatherRepository,
                                         private val citiesRepository: CitiesRepository,
-                                        private val imagesRepository: ImagesRepository) : BaseViewModel() {
+                                        private val imagesRepository: ImagesRepository)
+    : BaseViewModel<MainOutputState, MainInput>(defaultState = MainOutputState()) {
+
+    override fun outputStateInitLoad() {
+
+    }
+
+    override fun inputUpdate(input: MainInput?) {
+
+    }
 
     fun testCities() {
         citiesRepository.getRootCites()
@@ -27,7 +36,7 @@ class MainViewModel @Inject constructor(private val weatherRepository: WeatherRe
                 .doOnNext {
                     println(it)
                 }
-                .binViewModelLife()
+                .bindViewModelLife()
     }
 
     fun testImages() {
@@ -36,7 +45,7 @@ class MainViewModel @Inject constructor(private val weatherRepository: WeatherRe
                 .doOnNext {
                     println(it)
                 }
-                .binViewModelLife()
+                .bindViewModelLife()
 
     }
 

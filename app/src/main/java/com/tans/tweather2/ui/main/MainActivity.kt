@@ -1,23 +1,20 @@
 package com.tans.tweather2.ui.main
 
-import android.os.Bundle
 import com.tans.tweather2.R
-import com.tans.tweather2.db.CityDao
-import com.tans.tweather2.entites.City
+import com.tans.tweather2.databinding.ActivityMainBinding
 import com.tans.tweather2.ui.BaseActivity
-import com.tans.tweather2.utils.switchThread
-import io.reactivex.Completable
-import io.reactivex.Maybe
-import io.reactivex.Scheduler
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
 
-class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class.java) {
+class MainActivity
+    : BaseActivity<MainViewModel, ActivityMainBinding,
+        MainOutputState, MainInput>(MainViewModel::class.java) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        viewModel.testWeather()
+    override fun layoutId(): Int = R.layout.activity_main
+
+    override fun init() {
+        subScribeState({ it.msg }) {
+            viewDataBinding.msgTv.text = it
+        }
     }
+
+
 }
