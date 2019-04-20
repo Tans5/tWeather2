@@ -7,7 +7,10 @@ import com.tans.tweather2.api.service.WeatherService
 import com.tans.tweather2.api.service.getWeather
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
 import org.junit.Test
+import retrofit2.Retrofit
 import java.net.URLEncoder
 import java.util.*
 import javax.crypto.Mac
@@ -119,5 +122,28 @@ class ApiTest {
         println(images)
 
     }
+
+    @Test
+    fun mockWeatherTest() {
+        val service = mockRetrofitClient("weather.json")
+                .create(WeatherService::class.java)
+        val weather = service.getWeather(weatherRequest = WeatherService.Companion.WeatherRequest.CityNameRequest("成都"))
+                .blockingGet()
+
+        println(weather)
+    }
+
+    @Test
+    fun mockImagesTest() {
+        val service = mockRetrofitClient("imgs.json").create(BingService::class.java)
+        val images = service.getImages().blockingGet()
+        println(images)
+    }
+
+    private fun mockRetrofitClient(jsonFile: String): Retrofit = ApiClient.retrofitClientBuilder(ApiClient.ClientType.Weather)
+            .client(ApiClient.createBaseOkHttpClientBuilder()
+                    .addNetworkInterceptor(MockResponseInterceptor(jsonFile))
+                    .build())
+            .build()
 
 }

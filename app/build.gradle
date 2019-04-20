@@ -89,6 +89,7 @@ dependencies {
     // Okhttp
     implementation deps.okhttp.runtime
     implementation deps.okhttp.loggingInterceptor
+    testImplementation deps.okhttp.mockwebserver
 
     // Moshi
     implementation deps.moshi.runtime

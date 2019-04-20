@@ -113,6 +113,7 @@ ext.deps.moshi = moshi
 def okhttp = [:]
 okhttp.runtime = "com.squareup.okhttp3:okhttp:$versions.okhttp"
 okhttp.loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
+okhttp.mockwebserver = "com.squareup.okhttp3:mockwebserver:$versions.okhttp"
 ext.deps.okhttp = okhttp
 
 // Kodein

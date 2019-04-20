@@ -1,0 +1,116 @@
+{
+  "location": {
+    "woeid": 2158433,
+    "city": "Chengdu",
+    "region": " Sichuan",
+    "country": "China",
+    "lat": 30.67,
+    "long": 104.071022,
+    "timezone_id": "Asia/Chongqing"
+  },
+  "current_observation": {
+    "wind": {
+      "chill": 17,
+      "direction": 45,
+      "speed": 16.0
+    },
+    "atmosphere": {
+      "humidity": 79,
+      "visibility": 16.1,
+      "pressure": 950.0,
+      "rising": 0
+    },
+    "astronomy": {
+      "sunrise": "6:30 am",
+      "sunset": "7:35 pm"
+    },
+    "condition": {
+      "text": "Rain",
+      "code": 12,
+      "temperature": 18
+    },
+    "pubDate": 1555725600
+  },
+  "forecasts": [
+    {
+      "day": "Sat",
+      "date": 1555689600,
+      "low": 17,
+      "high": 23,
+      "text": "Rain",
+      "code": 12
+    },
+    {
+      "day": "Sun",
+      "date": 1555776000,
+      "low": 17,
+      "high": 28,
+      "text": "Partly Cloudy",
+      "code": 30
+    },
+    {
+      "day": "Mon",
+      "date": 1555862400,
+      "low": 17,
+      "high": 28,
+      "text": "Partly Cloudy",
+      "code": 30
+    },
+    {
+      "day": "Tue",
+      "date": 1555948800,
+      "low": 20,
+      "high": 30,
+      "text": "Partly Cloudy",
+      "code": 30
+    },
+    {
+      "day": "Wed",
+      "date": 1556035200,
+      "low": 21,
+      "high": 31,
+      "text": "Mostly Sunny",
+      "code": 34
+    },
+    {
+      "day": "Thu",
+      "date": 1556121600,
+      "low": 22,
+      "high": 32,
+      "text": "Mostly Sunny",
+      "code": 34
+    },
+    {
+      "day": "Fri",
+      "date": 1556208000,
+      "low": 23,
+      "high": 31,
+      "text": "Thunderstorms",
+      "code": 4
+    },
+    {
+      "day": "Sat",
+      "date": 1556294400,
+      "low": 22,
+      "high": 28,
+      "text": "Thunderstorms",
+      "code": 4
+    },
+    {
+      "day": "Sun",
+      "date": 1556380800,
+      "low": 22,
+      "high": 27,
+      "text": "Thunderstorms",
+      "code": 4
+    },
+    {
+      "day": "Mon",
+      "date": 1556467200,
+      "low": 21,
+      "high": 27,
+      "text": "Partly Cloudy",
+      "code": 30
+    }
+  ]
+}

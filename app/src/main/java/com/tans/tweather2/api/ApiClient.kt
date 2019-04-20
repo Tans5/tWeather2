@@ -29,23 +29,22 @@ object ApiClient {
     private val baseRetrofitClientBuilder = Retrofit.Builder()
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .client(createOkHttpClient())
+            .client(createBaseOkHttpClientBuilder().build())
 
     fun retrofitClientBuilder(clientType: ClientType): Retrofit.Builder {
         return baseRetrofitClientBuilder
                 .baseUrl(clientType.baseUrl)
     }
 
-    private fun createOkHttpClient(): OkHttpClient {
+    fun createBaseOkHttpClientBuilder(): OkHttpClient.Builder {
         val clientBuilder = OkHttpClient.Builder()
                 .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .addInterceptor(CityInterceptor)
         return if (BuildConfig.isDebug) {
             clientBuilder.addNetworkInterceptor(StethoInterceptor())
             clientBuilder.sslSocketFactory(createUnsafeSslSocketFactory(), createUnsafeTrustManager())
-                    .build()
         } else {
-            clientBuilder.build()
+            clientBuilder
         }
     }
 
