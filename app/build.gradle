@@ -99,4 +99,26 @@ dependencies {
 
     // Picasso
     implementation deps.picasso.runtime
+
+    // RxPermissions
+    implementation deps.rxpermissions.runtime
+
+    // RxBinding
+    implementation deps.rxbinding.runtime
+    implementation deps.rxbinding.core
+    implementation deps.rxbinding.appcompat
+    implementation deps.rxbinding.drawerlayout
+    implementation deps.rxbinding.recyclerview
+    implementation deps.rxbinding.swiperefreshlayout
+
+    // RxPermissions
+    implementation deps.rxpermissions.runtime
+
+    // Arrow
+    implementation deps.arrow.coredata
+    implementation deps.arrow.coreextensions
+    implementation deps.arrow.syntax
+    implementation deps.arrow.typeclasses
+    implementation deps.arrow.extrasextensions
+    kapt deps.arrow.meta
 }

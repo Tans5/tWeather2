@@ -8,7 +8,9 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
 import com.tans.tweather2.viewmodel.TWeatherViewModelFactory
 import dagger.android.support.DaggerAppCompatActivity
+import io.reactivex.Completable
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
@@ -23,7 +25,9 @@ abstract class BaseActivity<VM : BaseViewModel<OutputState, Input>, VDB : ViewDa
 
     val viewModel: VM by lazy { ViewModelProviders.of(this, viewModelFactory).get(viewModelClazz) }
 
-    private val outputDisposable: CompositeDisposable = CompositeDisposable()
+    private val outputCompositeDisposable: CompositeDisposable = CompositeDisposable()
+
+    private val inputCompositeDisposable: CompositeDisposable = CompositeDisposable()
 
     private val resultSubject = PublishSubject.create<Intent>()
 
@@ -38,7 +42,8 @@ abstract class BaseActivity<VM : BaseViewModel<OutputState, Input>, VDB : ViewDa
 
     override fun onDestroy() {
         super.onDestroy()
-        outputDisposable.dispose()
+        outputCompositeDisposable.dispose()
+        clearInputStreams()
     }
 
     abstract fun layoutId(): Int
@@ -60,7 +65,7 @@ abstract class BaseActivity<VM : BaseViewModel<OutputState, Input>, VDB : ViewDa
 
     fun <T> subScribeState(mapper: (OutputState) -> T,
                            handle: (T) -> Unit) {
-        outputDisposable.add(viewModel.bindOutputState()
+        outputCompositeDisposable.add(viewModel.bindOutputState()
                 .map { mapper(it) }
                 .distinctUntilChanged()
                 .doOnNext { handle(it) }
@@ -68,6 +73,34 @@ abstract class BaseActivity<VM : BaseViewModel<OutputState, Input>, VDB : ViewDa
                         {
                             Log.e(this::class.java.simpleName, "Output State Error: $it")
                         }, {}))
+    }
+
+    fun <T> Observable<T>.bindActivityLife() {
+        outputCompositeDisposable.add(this.subscribe({ Log.d(this::class.java.simpleName, "Next: ${it.toString()}") },
+                {  Log.e(this::class.java.simpleName, it.toString()) },
+                { Log.d(this::class.java.simpleName, "Complete") }))
+    }
+
+    fun Completable.bindActivityLife() {
+        outputCompositeDisposable.add(this.subscribe(
+                { Log.d(this::class.java.simpleName, "Complete") },
+                {  Log.e(this::class.java.simpleName, it.toString()) }))
+    }
+
+    fun <T> Observable<T>.bindInputLifecycle() {
+        inputCompositeDisposable.add(this.subscribe({ Log.d(this::class.java.simpleName, "Next: ${it.toString()}") },
+                {  Log.e(this::class.java.simpleName, it.toString()) },
+                { Log.d(this::class.java.simpleName, "Complete") }))
+    }
+
+    fun Completable.bindInputLifecycle() {
+        inputCompositeDisposable.add(this.subscribe(
+                { Log.d(this::class.java.simpleName, "Complete") },
+                {  Log.e(this::class.java.simpleName, it.toString()) }))
+    }
+
+    fun clearInputStreams() {
+        inputCompositeDisposable.clear()
     }
 
 }

@@ -24,6 +24,9 @@ versions.design = "1.0.0"
 versions.moshi = "1.8.0"
 versions.picasso = "2.5.2"
 versions.stetho = "1.5.1"
+versions.rxpermissions = "0.10.2"
+versions.rxbinding = "3.0.0-alpha2"
+versions.arrow = "0.9.0"
 
 def view = [:]
 // androidx view
@@ -138,3 +141,32 @@ def stetho = [:]
 stetho.runtime = "com.facebook.stetho:stetho:$versions.stetho"
 stetho.okhttp = "com.facebook.stetho:stetho-okhttp3:$versions.stetho"
 ext.deps.stetho = stetho
+
+// RxPermissions
+def rxpermissions = [:]
+rxpermissions.runtime = "com.github.tbruyelle:rxpermissions:$versions.rxpermissions"
+ext.deps.rxpermissions = rxpermissions
+
+// RxBinding
+def rxbinding = [:]
+rxbinding.runtime = "com.jakewharton.rxbinding3:rxbinding:$versions.rxbinding"
+rxbinding.core = "com.jakewharton.rxbinding3:rxbinding-appcompat:$versions.rxbinding"
+rxbinding.appcompat = "com.jakewharton.rxbinding3:rxbinding-appcompat:$versions.rxbinding"
+rxbinding.drawerlayout = "com.jakewharton.rxbinding3:rxbinding-drawerlayout:$versions.rxbinding"
+rxbinding.leanback = "com.jakewharton.rxbinding3:rxbinding-leanback:$versions.rxbinding"
+rxbinding.recyclerview = "com.jakewharton.rxbinding3:rxbinding-recyclerview:$versions.rxbinding"
+rxbinding.slidingpanelayout = "com.jakewharton.rxbinding3:rxbinding-slidingpanelayout:$versions.rxbinding"
+rxbinding.swiperefreshlayout = "com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:$versions.rxbinding"
+rxbinding.viewpager = "com.jakewharton.rxbinding3:rxbinding-viewpager:$versions.rxbinding"
+ext.deps.rxbinding = rxbinding
+
+// Arrow
+def arrow = [:]
+arrow.coredata = "io.arrow-kt:arrow-core-data:$versions.arrow"
+arrow.coreextensions = "io.arrow-kt:arrow-core-extensions:$versions.arrow"
+arrow.syntax = "io.arrow-kt:arrow-syntax:$versions.arrow"
+arrow.typeclasses = "io.arrow-kt:arrow-typeclasses:$versions.arrow"
+arrow.extrasdata = "io.arrow-kt:arrow-extras-data:$versions.arrow"
+arrow.extrasextensions = "io.arrow-kt:arrow-extras-extensions:$versions.arrow"
+arrow.meta = "io.arrow-kt:arrow-meta:$versions.arrow"
+ext.deps.arrow = arrow

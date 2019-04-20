@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">tWeather2</string>
+
+    <!-- Splash Activity -->
+    <string name="splash_activity_choose_current_city">使用GPS</string>
+    <string name="splash_activity_choose_city">选择城市</string>
+
 </resources>

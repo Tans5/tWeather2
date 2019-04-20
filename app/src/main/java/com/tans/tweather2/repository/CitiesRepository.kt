@@ -5,6 +5,7 @@ import com.tans.tweather2.api.service.CitiesService
 import com.tans.tweather2.db.CityDao
 import com.tans.tweather2.entites.City
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -18,6 +19,8 @@ class CitiesRepository @Inject constructor(private val citiesService: CitiesServ
     fun updateCity(city: City): Completable = Completable.fromAction {
         citiesDao.insert(city)
     }
+
+    fun getFavorCitiesSize(): Maybe<Int> = citiesDao.favorCitySize()
 
     private fun getCitiesPrivate(parentId: Long?, level: Int): Single<Cities> = if (parentId == null) {
         citiesDao.queryRootCites()

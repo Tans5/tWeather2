@@ -1,9 +1,11 @@
 package com.tans.tweather2.ui.main
 
+import androidx.databinding.ViewDataBinding
 import com.tans.tweather2.entites.City
 import com.tans.tweather2.repository.CitiesRepository
 import com.tans.tweather2.repository.ImagesRepository
 import com.tans.tweather2.repository.WeatherRepository
+import com.tans.tweather2.ui.BaseActivity
 import com.tans.tweather2.ui.BaseViewModel
 import com.tans.tweather2.utils.switchThread
 import javax.inject.Inject
@@ -12,12 +14,14 @@ class MainViewModel @Inject constructor(private val weatherRepository: WeatherRe
                                         private val citiesRepository: CitiesRepository,
                                         private val imagesRepository: ImagesRepository)
     : BaseViewModel<MainOutputState, MainInput>(defaultState = MainOutputState()) {
-
-    override fun outputStateInitLoad() {
-
+    override fun inputUpdate(input: MainInput?, activity: BaseActivity<out BaseViewModel<*, *>, out ViewDataBinding, *, *>) {
+        with(activity) {
+            input?.unit?.bindInputLifecycle()
+        }
     }
 
-    override fun inputUpdate(input: MainInput?) {
+
+    override fun outputStateInitLoad() {
 
     }
 
