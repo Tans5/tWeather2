@@ -1,19 +1,18 @@
 package com.tans.tweather2.ui
 
+import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import com.tans.tweather2.R
-import com.tans.tweather2.databinding.ActivityMainBinding
 import com.tans.tweather2.viewmodel.TWeatherViewModelFactory
 import dagger.android.support.DaggerAppCompatActivity
+import io.reactivex.Maybe
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
+import kotlin.random.Random
 
 abstract class BaseActivity<VM : BaseViewModel<OutputState, Input>, VDB : ViewDataBinding, OutputState, Input>(viewModelClazz: Class<VM>)
 
@@ -25,6 +24,8 @@ abstract class BaseActivity<VM : BaseViewModel<OutputState, Input>, VDB : ViewDa
     val viewModel: VM by lazy { ViewModelProviders.of(this, viewModelFactory).get(viewModelClazz) }
 
     private val outputDisposable: CompositeDisposable = CompositeDisposable()
+
+    private val resultSubject = PublishSubject.create<Intent>()
 
     lateinit var viewDataBinding: VDB
 
@@ -43,6 +44,19 @@ abstract class BaseActivity<VM : BaseViewModel<OutputState, Input>, VDB : ViewDa
     abstract fun layoutId(): Int
 
     abstract fun init()
+
+    fun startActivityForResult(intent: Intent): Maybe<Intent> {
+        val requestCode: Int = Random.nextInt(1, 100)
+        startActivityForResult(intent, requestCode)
+        return resultSubject.firstElement()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (data != null) {
+            resultSubject.onNext(data)
+        }
+    }
 
     fun <T> subScribeState(mapper: (OutputState) -> T,
                            handle: (T) -> Unit) {
