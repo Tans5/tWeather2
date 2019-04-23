@@ -3,6 +3,7 @@ package com.tans.tweather2.ui.splash
 import android.content.Intent
 import android.view.View
 import arrow.core.Some
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.jakewharton.rxbinding3.view.clicks
 import com.tans.tweather2.R
 import com.tans.tweather2.databinding.ActivitySplashBinding
@@ -21,14 +22,10 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding, Spla
 
     override fun init() {
 
-        viewModel.setInput(input = SplashInput(chooseCity = viewDataBinding.cityTv.clicks()
-                .flatMapMaybe { Maybe.empty<City>() }), activity = this)
+        viewModel.setInput(input = SplashInput(chooseCity = viewDataBinding.cityTv.clicks(),
+                currentLocation = viewDataBinding.currentLocationTv.clicks()), activity = this)
 
         viewDataBinding.currentLocationTv.clicks()
-                .doOnNext {
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                }
                 .bindActivityLife()
 
         subScribeState({ it.choseCity }) { city ->
@@ -56,6 +53,7 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding, Spla
                 .delay(sleep, TimeUnit.MILLISECONDS, Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess {
+                    overridePendingTransition(0, 0)
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }

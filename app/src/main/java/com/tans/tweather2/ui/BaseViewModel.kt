@@ -43,13 +43,13 @@ abstract class BaseViewModel<OutputState, Input>(defaultState: OutputState) : Vi
 
     fun <T> Maybe<T>.bindViewModelLife() {
         compositeDisposable.add(this.subscribe ({ Log.d(this@BaseViewModel::class.java.simpleName, "Success: ${it.toString()}")  },
-                { Log.e(this@BaseViewModel::class.java.simpleName, "Error: ${it.toString()}") },
+                { Log.e(this@BaseViewModel::class.java.simpleName, "Error: $it") },
                 { Log.d(this@BaseViewModel::class.java.simpleName, "Complete") }))
     }
 
     fun Completable.bindViewModelLife() {
         compositeDisposable.add(this.subscribe ({ Log.d(this@BaseViewModel::class.java.simpleName, "Complete") },
-                { Log.e(this@BaseViewModel::class.java.simpleName, "Error: ${it.toString()}") }))
+                { Log.e(this@BaseViewModel::class.java.simpleName, "Error: $it") }))
     }
 
     fun bindOutputState(): Observable<OutputState> = output

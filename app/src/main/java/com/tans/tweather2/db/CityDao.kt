@@ -30,4 +30,7 @@ interface CityDao {
 
     @Query("select * from city where favor_order > 0 order by favor_order")
     fun queryFavorCities(): Maybe<Cities>
+
+    @Query("select max(favor_order) from city where favor_order > 0")
+    fun maxFavorOrder(): Maybe<Int>
 }

@@ -29,7 +29,7 @@ abstract class BaseActivity<VM : BaseViewModel<OutputState, Input>, VDB : ViewDa
 
     private val inputCompositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    private val resultSubject = PublishSubject.create<Intent>()
+    private val resultSubject = PublishSubject.create<ActivityResult>()
 
     lateinit var viewDataBinding: VDB
 
@@ -53,13 +53,15 @@ abstract class BaseActivity<VM : BaseViewModel<OutputState, Input>, VDB : ViewDa
     fun startActivityForResult(intent: Intent): Maybe<Intent> {
         val requestCode: Int = Random.nextInt(1, 100)
         startActivityForResult(intent, requestCode)
-        return resultSubject.firstElement()
+        return resultSubject.filter { it.first == requestCode }
+                .firstElement()
+                .map { it.second }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (data != null) {
-            resultSubject.onNext(data)
+            resultSubject.onNext(requestCode to data)
         }
     }
 
@@ -104,3 +106,5 @@ abstract class BaseActivity<VM : BaseViewModel<OutputState, Input>, VDB : ViewDa
     }
 
 }
+
+private typealias ActivityResult = Pair<Int, Intent>

@@ -16,6 +16,16 @@ class CitiesRepository @Inject constructor(private val citiesService: CitiesServ
 
     fun getCities(parentId: Long, level: Int): Single<Cities> = getCitiesPrivate(parentId, level)
 
+    fun addCityToFavor(city: City): Completable = if (city.favorOrder > 0) {
+        Completable.complete()
+    } else {
+        citiesDao.favorCitySize()
+                .switchIfEmpty(Single.just(0))
+                .flatMapCompletable {
+                    Completable.fromAction { citiesDao.insert(city.copy(favorOrder = it + 1)) }
+                }
+    }
+
     fun updateCity(city: City): Completable = Completable.fromAction {
         citiesDao.insert(city)
     }
