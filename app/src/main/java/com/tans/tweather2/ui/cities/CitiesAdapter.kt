@@ -10,7 +10,7 @@ import com.tans.tweather2.databinding.LayoutItemCityBinding
 import com.tans.tweather2.entites.City
 import com.tans.tweather2.ui.BaseRecyclerViewAdapter
 
-class CitiesAdapter : BaseRecyclerViewAdapter<City, CitiesViewHolder>(differCallBack = object : DiffUtil.ItemCallback<City>() {
+class CitiesAdapter constructor(private val itemClickCall: (City) -> Unit)  : BaseRecyclerViewAdapter<City, CitiesViewHolder>(differCallBack = object : DiffUtil.ItemCallback<City>() {
 
     override fun areItemsTheSame(oldItem: City, newItem: City): Boolean = oldItem.id == newItem.id
 
@@ -23,8 +23,8 @@ class CitiesAdapter : BaseRecyclerViewAdapter<City, CitiesViewHolder>(differCall
 
     override fun onBindViewHolder(holder: CitiesViewHolder, position: Int) {
         holder.dataBinding.cityNameTv.text = getItem(position).cityName
+        holder.dataBinding.cityItemRootLayout.setOnClickListener { itemClickCall(getItem(position)) }
     }
-
 
 }
 

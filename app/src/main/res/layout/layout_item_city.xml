@@ -6,9 +6,11 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/city_item_root_layout"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@android:color/white">
 
         <TextView
             android:id="@+id/city_name_tv"

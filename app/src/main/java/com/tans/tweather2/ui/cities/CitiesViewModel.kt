@@ -1,5 +1,6 @@
 package com.tans.tweather2.ui.cities
 
+import android.app.Activity
 import androidx.databinding.ViewDataBinding
 import arrow.core.none
 import arrow.core.some
@@ -16,7 +17,7 @@ class CitiesViewModel @Inject constructor(private val citiesRepository: CitiesRe
         with(activity) {
             input?.nextChildren?.filter {
                 if (it.level >= 3) {
-                    // setResult(Activity.RESULT_OK, )
+                    setResult(Activity.RESULT_OK, CitiesActivity.createResultIntent(it))
                     finish()
                     false
                 } else {
@@ -32,7 +33,6 @@ class CitiesViewModel @Inject constructor(private val citiesRepository: CitiesRe
                             }
                         }
             }?.bindInputLifecycle()
-
 
         }
     }
