@@ -25,9 +25,6 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding, Spla
         viewModel.setInput(input = SplashInput(chooseCity = viewDataBinding.cityTv.clicks(),
                 currentLocation = viewDataBinding.currentLocationTv.clicks()), activity = this)
 
-        viewDataBinding.currentLocationTv.clicks()
-                .bindActivityLife()
-
         subScribeState({ it.choseCity }) { city ->
             if (city is Some) {
                 viewDataBinding.cityTv.text = city.t.cityName
@@ -53,9 +50,10 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding, Spla
                 .delay(sleep, TimeUnit.MILLISECONDS, Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess {
+                    startActivity(Intent(this, MainActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    })
                     overridePendingTransition(0, 0)
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
                 }
                 .ignoreElement()
                 .bindActivityLife()

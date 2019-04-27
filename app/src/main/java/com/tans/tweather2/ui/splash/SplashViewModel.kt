@@ -23,9 +23,11 @@ class SplashViewModel @Inject constructor(private val citiesRepository: CitiesRe
                     }?.bindInputLifecycle()
 
             input?.currentLocation?.doOnNext {
+                startActivity(Intent(this, MainActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                })
                 overridePendingTransition(0, 0)
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+                // finish()
             }?.bindInputLifecycle()
         }
     }
