@@ -7,6 +7,7 @@ import com.tans.tweather2.entites.City
 import com.tans.tweather2.repository.CitiesRepository
 import com.tans.tweather2.ui.BaseActivity
 import com.tans.tweather2.ui.BaseViewModel
+import com.tans.tweather2.ui.cities.CitiesActivity
 import com.tans.tweather2.ui.main.MainActivity
 import com.tans.tweather2.utils.switchThread
 import io.reactivex.Maybe
@@ -17,7 +18,10 @@ class SplashViewModel @Inject constructor(private val citiesRepository: CitiesRe
         with(activity) {
 
             input?.chooseCity
-                    ?.flatMapMaybe { Maybe.empty<City>() }
+                    ?.flatMapMaybe {
+                        startActivityForResult(CitiesActivity.getIntent(this))
+                                .map { CitiesActivity.getResultData(it) }
+                    }
                     ?.flatMapCompletable { city ->
                         updateOutputState { it.copy(choseCity = city.some()) }
                     }?.bindInputLifecycle()

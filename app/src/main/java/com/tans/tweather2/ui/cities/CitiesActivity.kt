@@ -20,6 +20,9 @@ class CitiesActivity
 
         val (cityObs, cityCall ) = callToObservable<City>()
         val citiesAdapter = CitiesAdapter(cityCall)
+        cityObs.doOnNext {
+            println(it)
+        }.bindInputLifecycle()
         viewDataBinding.citiesRv.adapter = citiesAdapter
 
         viewModel.setInput(input = CitiesInput(nextChildren = cityObs),

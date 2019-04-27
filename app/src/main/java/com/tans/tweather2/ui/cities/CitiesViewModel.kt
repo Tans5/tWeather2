@@ -8,6 +8,7 @@ import com.tans.tweather2.entites.City
 import com.tans.tweather2.repository.CitiesRepository
 import com.tans.tweather2.ui.BaseActivity
 import com.tans.tweather2.ui.BaseViewModel
+import com.tans.tweather2.utils.switchThread
 import javax.inject.Inject
 
 class CitiesViewModel @Inject constructor(private val citiesRepository: CitiesRepository)
@@ -23,8 +24,9 @@ class CitiesViewModel @Inject constructor(private val citiesRepository: CitiesRe
                 } else {
                     true
                 }
-            }?.flatMapCompletable { parentCity ->
+            }?.switchMapCompletable { parentCity ->
                 citiesRepository.getCities(parentId = parentCity.id, level = parentCity.level + 1)
+                        .switchThread()
                         .flatMapCompletable { children ->
                             updateOutputState {
                                 val oldChain = it.citiesChain
@@ -39,6 +41,7 @@ class CitiesViewModel @Inject constructor(private val citiesRepository: CitiesRe
 
     override fun outputStateInitLoad() {
         citiesRepository.getRootCites()
+                .switchThread()
                 .flatMapCompletable { rootCities ->
                     updateOutputState { state ->
                         state.copy(citiesChain = listOf(none<City>() to rootCities))
