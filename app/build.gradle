@@ -121,4 +121,7 @@ dependencies {
     implementation deps.arrow.typeclasses
     implementation deps.arrow.extrasextensions
     kapt deps.arrow.meta
+
+    // Timber
+    implementation deps.timber.runtime
 }

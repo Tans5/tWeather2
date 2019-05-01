@@ -23,7 +23,7 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding, Spla
     override fun init() {
 
         viewModel.setInput(input = SplashInput(chooseCity = viewDataBinding.cityTv.clicks(),
-                currentLocation = viewDataBinding.currentLocationTv.clicks()), activity = this)
+                currentLocation = viewDataBinding.currentLocationTv.clicks()), subscriber = this)
 
         subScribeState({ it.choseCity }) { city ->
             if (city is Some) {
@@ -31,7 +31,6 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding, Spla
             } else {
                 viewDataBinding.cityTv.setText(R.string.splash_activity_choose_city)
             }
-
         }
 
         subScribeState({ it.hasFavorCity }) {
@@ -56,7 +55,7 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding, Spla
                     overridePendingTransition(0, 0)
                 }
                 .ignoreElement()
-                .bindActivityLife()
+                .bindLife()
     }
 
 }

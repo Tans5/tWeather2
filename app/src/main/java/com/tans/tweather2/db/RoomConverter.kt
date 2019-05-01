@@ -93,7 +93,7 @@ object RoomConverter {
     @TypeConverter
     @JvmStatic
     fun stringToToolTops(value: String?)
-            : ToolTips? = ToolTipsJsonAdapter(ApiClient.moshi).fromJson(value)
+            : ToolTips? = ToolTipsJsonAdapter(ApiClient.moshi).fromJson(value ?: "")
 
     @TypeConverter
     @JvmStatic

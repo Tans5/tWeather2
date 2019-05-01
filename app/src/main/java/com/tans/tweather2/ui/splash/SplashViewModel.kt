@@ -1,12 +1,12 @@
 package com.tans.tweather2.ui.splash
 
+import android.app.Activity
 import android.content.Intent
-import androidx.databinding.ViewDataBinding
 import arrow.core.some
-import com.tans.tweather2.entites.City
 import com.tans.tweather2.repository.CitiesRepository
 import com.tans.tweather2.ui.BaseActivity
 import com.tans.tweather2.ui.BaseViewModel
+import com.tans.tweather2.ui.ViewModelSubscriber
 import com.tans.tweather2.ui.cities.CitiesActivity
 import com.tans.tweather2.ui.main.MainActivity
 import com.tans.tweather2.utils.switchThread
@@ -14,24 +14,29 @@ import io.reactivex.Maybe
 import javax.inject.Inject
 
 class SplashViewModel @Inject constructor(private val citiesRepository: CitiesRepository) : BaseViewModel<SplashOutputState, SplashInput>(SplashOutputState()) {
-    override fun inputUpdate(input: SplashInput?, activity: BaseActivity<out BaseViewModel<*, *>, out ViewDataBinding, *, *>) {
-        with(activity) {
+    override fun inputUpdate(input: SplashInput?, subscriber: ViewModelSubscriber) {
+        with(subscriber) {
 
             input?.chooseCity
                     ?.flatMapMaybe {
-                        startActivityForResult(CitiesActivity.getIntent(this))
-                                .map { CitiesActivity.getResultData(it) }
+                        if (this is BaseActivity<*, *, *, *>) {
+                            startActivityForResult(CitiesActivity.getIntent(this))
+                                    .map { CitiesActivity.getResultData(it) }
+                        } else {
+                            Maybe.empty()
+                        }
                     }
                     ?.flatMapCompletable { city ->
                         updateOutputState { it.copy(choseCity = city.some()) }
                     }?.bindInputLifecycle()
 
             input?.currentLocation?.doOnNext {
-                startActivity(Intent(this, MainActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                })
-                overridePendingTransition(0, 0)
-                // finish()
+                if (this is Activity) {
+                    startActivity(Intent(this, MainActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    })
+                    overridePendingTransition(0, 0)
+                }
             }?.bindInputLifecycle()
         }
     }
@@ -47,7 +52,7 @@ class SplashViewModel @Inject constructor(private val citiesRepository: CitiesRe
                         state.copy(hasFavorCity = hasFavorCity)
                     }
                 }
-                .bindViewModelLife()
+                .bindLife()
 
     }
 

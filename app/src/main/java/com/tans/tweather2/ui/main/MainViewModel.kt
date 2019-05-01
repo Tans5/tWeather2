@@ -1,12 +1,11 @@
 package com.tans.tweather2.ui.main
 
-import androidx.databinding.ViewDataBinding
 import com.tans.tweather2.entites.City
 import com.tans.tweather2.repository.CitiesRepository
 import com.tans.tweather2.repository.ImagesRepository
 import com.tans.tweather2.repository.WeatherRepository
-import com.tans.tweather2.ui.BaseActivity
 import com.tans.tweather2.ui.BaseViewModel
+import com.tans.tweather2.ui.ViewModelSubscriber
 import com.tans.tweather2.utils.switchThread
 import javax.inject.Inject
 
@@ -14,8 +13,8 @@ class MainViewModel @Inject constructor(private val weatherRepository: WeatherRe
                                         private val citiesRepository: CitiesRepository,
                                         private val imagesRepository: ImagesRepository)
     : BaseViewModel<MainOutputState, MainInput>(defaultState = MainOutputState()) {
-    override fun inputUpdate(input: MainInput?, activity: BaseActivity<out BaseViewModel<*, *>, out ViewDataBinding, *, *>) {
-        with(activity) {
+    override fun inputUpdate(input: MainInput?, subscriber: ViewModelSubscriber) {
+        with(subscriber) {
             input?.unit?.bindInputLifecycle()
         }
     }
@@ -31,7 +30,7 @@ class MainViewModel @Inject constructor(private val weatherRepository: WeatherRe
                 .doOnSuccess {
                     println(it)
                 }
-                .bindViewModelLife()
+                .bindLife()
     }
 
     fun testWeather() {
@@ -40,7 +39,7 @@ class MainViewModel @Inject constructor(private val weatherRepository: WeatherRe
                 .doOnNext {
                     println(it)
                 }
-                .bindViewModelLife()
+                .bindLife()
     }
 
     fun testImages() {
@@ -49,7 +48,7 @@ class MainViewModel @Inject constructor(private val weatherRepository: WeatherRe
                 .doOnNext {
                     println(it)
                 }
-                .bindViewModelLife()
+                .bindLife()
 
     }
 

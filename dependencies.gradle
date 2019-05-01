@@ -27,6 +27,7 @@ versions.stetho = "1.5.1"
 versions.rxpermissions = "0.10.2"
 versions.rxbinding = "3.0.0-alpha2"
 versions.arrow = "0.9.0"
+versions.timber = "4.7.1"
 
 def view = [:]
 // androidx view
@@ -170,3 +171,8 @@ arrow.extrasdata = "io.arrow-kt:arrow-extras-data:$versions.arrow"
 arrow.extrasextensions = "io.arrow-kt:arrow-extras-extensions:$versions.arrow"
 arrow.meta = "io.arrow-kt:arrow-meta:$versions.arrow"
 ext.deps.arrow = arrow
+
+// Timber
+def timber = [:]
+timber.runtime = "com.jakewharton.timber:timber:$versions.timber"
+ext.deps.timber = timber

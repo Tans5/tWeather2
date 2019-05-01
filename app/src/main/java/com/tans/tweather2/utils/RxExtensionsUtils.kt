@@ -22,7 +22,7 @@ fun <T> Single<T>.toEither()
         .onErrorResumeNext { Single.just(Either.left(it)) }
 
 fun <T> callToObservable(): Pair<Observable<T>, (T) -> Unit> {
-    val obs = PublishSubject.create<T>()
+    val obs = PublishSubject.create<T>().toSerialized()
     val call: (T) -> Unit = { obs.onNext(it) }
     return obs to call
 }
