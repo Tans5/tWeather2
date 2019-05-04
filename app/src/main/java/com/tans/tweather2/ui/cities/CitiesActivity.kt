@@ -24,7 +24,7 @@ class CitiesActivity
 
     override fun init() {
 
-        val (cityObs, cityCall ) = callToObservable<City>()
+        val (cityObs, cityCall) = callToObservable<City>()
         val citiesAdapter = CitiesAdapter(cityCall)
         viewDataBinding.citiesRv.adapter = citiesAdapter
 
@@ -34,8 +34,17 @@ class CitiesActivity
 
         subScribeState({ it.citiesChain }) {
             val item = it.getOrNull(it.lastIndex)
-            viewDataBinding.title.title = item?.first?.orNull()?.cityName ?: getString(R.string.splash_activity_choose_city)
+            viewDataBinding.title.title = item?.first?.orNull()?.cityName
+                    ?: getString(R.string.splash_activity_choose_city)
             citiesAdapter.submitList(item?.second)
+        }
+
+        subScribeState({ it.showLoadingDialog }) {
+            if (it) {
+                showLoadingDialog(LOADING_DIALOG_TAG)
+            } else {
+                disMissDialog(LOADING_DIALOG_TAG)
+            }
         }
     }
 
@@ -45,6 +54,7 @@ class CitiesActivity
 
     companion object {
         private const val CITY_RESULT_KEY = "city_result_key"
+        private const val LOADING_DIALOG_TAG = "loading_dialog_tag"
 
         fun createResultIntent(city: City): Intent = Intent().apply { putExtra(CITY_RESULT_KEY, city.toJson()) }
 

@@ -25,6 +25,9 @@ fun <T> Single<T>.toEither()
         : Single<Either<Throwable, T>> = this.map<Either<Throwable, T>> { Either.right(it) }
         .onErrorResumeNext { Single.just(Either.left(it)) }
 
+fun Completable.finally(final: Completable): Completable = andThen(final)
+        .onErrorResumeNext { final }
+
 fun <T> callToObservable(): Pair<Observable<T>, (T) -> Unit> {
     val obs = PublishSubject.create<T>().toSerialized()
     val call: (T) -> Unit = { obs.onNext(it) }

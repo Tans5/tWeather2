@@ -1,24 +1,27 @@
 package com.tans.tweather2.ui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
 import com.tans.tweather2.viewmodel.TWeatherViewModelFactory
 import dagger.android.support.DaggerAppCompatActivity
-import io.reactivex.Completable
 import io.reactivex.Maybe
-import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.Subject
 import javax.inject.Inject
 import kotlin.random.Random
 
 abstract class BaseActivity<VM : BaseViewModel<OutputState, Input>, VDB : ViewDataBinding, OutputState, Input>(viewModelClazz: Class<VM>)
 
-    : DaggerAppCompatActivity(), BindLife, ViewModelSubscriber {
+    : DaggerAppCompatActivity(),
+        BindLife,
+        ViewModelSubscriber,
+        DialogOwner{
 
     @Inject
     lateinit var viewModelFactory: TWeatherViewModelFactory
@@ -30,6 +33,13 @@ abstract class BaseActivity<VM : BaseViewModel<OutputState, Input>, VDB : ViewDa
     override val inputCompositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override val lifeCompositeDisposable: CompositeDisposable = CompositeDisposable()
+
+    override val context: Context
+        get() = this
+
+    override val showingDialogs: MutableMap<String, AlertDialog> = HashMap()
+
+    override val dialogEvents: Subject<DialogEvent> = PublishSubject.create<DialogEvent>().toSerialized()
 
     private val resultSubject = PublishSubject.create<ActivityResult>().toSerialized()
 

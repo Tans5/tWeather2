@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">tWeather2</string>
 
+    <string name="dialog_ok">确认</string>
+    <string name="dialog_cancel">取消</string>
+
     <!-- Splash Activity -->
     <string name="splash_activity_use_gps">使用GPS</string>
     <string name="splash_activity_choose_city">选择城市</string>

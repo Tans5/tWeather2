@@ -7,6 +7,7 @@ import com.tans.tweather2.entites.City
 import com.tans.tweather2.repository.CitiesRepository
 import com.tans.tweather2.ui.BaseViewModel
 import com.tans.tweather2.ui.ViewModelSubscriber
+import com.tans.tweather2.utils.finally
 import com.tans.tweather2.utils.switchThread
 import io.reactivex.Completable
 import io.reactivex.rxkotlin.withLatestFrom
@@ -59,13 +60,15 @@ class CitiesViewModel @Inject constructor(private val citiesRepository: CitiesRe
     }
 
     override fun outputStateInitLoad() {
-        citiesRepository.getRootCites()
-                .switchThread()
+        updateOutputState { it.copy(showLoadingDialog = true) }
+                .andThen(citiesRepository.getRootCites()
+                        .switchThread())
                 .flatMapCompletable { rootCities ->
                     updateOutputState { state ->
                         state.copy(citiesChain = listOf(none<City>() to rootCities))
                     }
                 }
+                .finally(updateOutputState { it.copy(showLoadingDialog = false) })
                 .bindLife()
     }
 
