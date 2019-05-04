@@ -1,6 +1,7 @@
 package com.tans.tweather2.utils
 
 import arrow.core.Either
+import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -15,6 +16,9 @@ fun <T> Observable<T>.switchThread(): Observable<T> = this.subscribeOn(Scheduler
         .observeOn(AndroidSchedulers.mainThread())
 
 fun <T> Maybe<T>.switchThread(): Maybe<T> = this.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+
+fun Completable.switchThread(): Completable = this.subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
 
 fun <T> Single<T>.toEither()

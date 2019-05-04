@@ -19,7 +19,7 @@ class CitiesRepository @Inject constructor(private val citiesService: CitiesServ
     fun addCityToFavor(city: City): Completable = if (city.favorOrder > 0) {
         Completable.complete()
     } else {
-        citiesDao.favorCitySize()
+        citiesDao.maxFavorOrder()
                 .switchIfEmpty(Single.just(0))
                 .flatMapCompletable {
                     Completable.fromAction { citiesDao.insert(city.copy(favorOrder = it + 1)) }

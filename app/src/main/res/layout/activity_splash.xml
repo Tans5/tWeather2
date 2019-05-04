@@ -27,7 +27,7 @@
             android:id="@+id/no_favor_city_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:gravity="center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,20 +35,26 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
-                android:id="@+id/current_location_tv"
+                android:id="@+id/chose_city_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="@string/splash_activity_choose_current_city"
+                android:background="@drawable/grey_boder_bg"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="@string/splash_activity_use_gps"
+                android:drawableEnd="@drawable/ic_chevron_down_grey600_24dp"
+                android:drawablePadding="10dp"
+                android:gravity="center"
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/city_tv"
+                android:id="@+id/enter_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/splash_activity_choose_city"
-                android:textSize="12sp"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginTop="10dp"
+                android:text="@string/splash_activity_enter"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
