@@ -47,9 +47,8 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding, Spla
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess {
                     startActivity(Intent(this, MainActivity::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_ANIMATION
                     })
-                    overridePendingTransition(0, 0)
                 }
                 .ignoreElement()
                 .bindLife()
