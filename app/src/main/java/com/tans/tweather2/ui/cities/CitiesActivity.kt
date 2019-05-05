@@ -38,14 +38,6 @@ class CitiesActivity
                     ?: getString(R.string.splash_activity_choose_city)
             citiesAdapter.submitList(item?.second)
         }
-
-        subScribeState({ it.showLoadingDialog }) {
-            if (it) {
-                showLoadingDialog(LOADING_DIALOG_TAG)
-            } else {
-                disMissDialog(LOADING_DIALOG_TAG)
-            }
-        }
     }
 
     override fun onBackPressed() {

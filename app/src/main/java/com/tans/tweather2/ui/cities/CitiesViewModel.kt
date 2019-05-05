@@ -5,7 +5,9 @@ import arrow.core.none
 import arrow.core.some
 import com.tans.tweather2.entites.City
 import com.tans.tweather2.repository.CitiesRepository
+import com.tans.tweather2.ui.BaseActivity
 import com.tans.tweather2.ui.BaseViewModel
+import com.tans.tweather2.ui.DialogOwner
 import com.tans.tweather2.ui.ViewModelSubscriber
 import com.tans.tweather2.utils.finally
 import com.tans.tweather2.utils.switchThread
@@ -17,59 +19,59 @@ class CitiesViewModel @Inject constructor(private val citiesRepository: CitiesRe
     : BaseViewModel<CitiesOutputState, CitiesInput>(defaultState = CitiesOutputState()) {
 
     override fun inputUpdate(input: CitiesInput?, subscriber: ViewModelSubscriber) {
-        with(subscriber) {
-            input?.nextChildren?.filter {
-                if (it.level >= 3) {
-                    if (this is Activity) {
+        if (subscriber is BaseActivity<*, *, *, *>) {
+            with(subscriber) {
+                input?.nextChildren?.filter {
+                    if (it.level >= 3) {
                         setResult(Activity.RESULT_OK, CitiesActivity.createResultIntent(it))
                         finish()
+                        false
+                    } else {
+                        true
                     }
-                    false
-                } else {
-                    true
-                }
-            }?.switchMapCompletable { parentCity ->
-                citiesRepository.getCities(parentId = parentCity.id, level = parentCity.level + 1)
-                        .switchThread()
-                        .flatMapCompletable { children ->
-                            updateOutputState {
-                                val oldChain = it.citiesChain
-                                val newChain: List<CitiesAndParent> = oldChain.toMutableList().apply { add(parentCity.some() to children) }
-                                it.copy(citiesChain = newChain)
+                }?.switchMapCompletable { parentCity ->
+                    citiesRepository.getCities(parentId = parentCity.id, level = parentCity.level + 1)
+                            .switchThread()
+                            .showLoadingDialog()
+                            .flatMapCompletable { children ->
+                                updateOutputState {
+                                    val oldChain = it.citiesChain
+                                    val newChain: List<CitiesAndParent> = oldChain.toMutableList().apply { add(parentCity.some() to children) }
+                                    it.copy(citiesChain = newChain)
+                                }
                             }
-                        }
-            }?.bindInputLifecycle()
+                }?.bindInputLifecycle()
 
-            input?.backPress
-                    ?.withLatestFrom(bindOutputState().map { it.citiesChain })
-                    ?.flatMapCompletable { (_, citiesChain) ->
-                        if (citiesChain.size <= 1) {
-                            if (this is Activity) {
-                                Completable.fromAction { finish() }
+                input?.backPress
+                        ?.withLatestFrom(bindOutputState().map { it.citiesChain })
+                        ?.flatMapCompletable { (_, citiesChain) ->
+                            if (citiesChain.size <= 1) {
+                                if (this is Activity) {
+                                    Completable.fromAction { finish() }
+                                } else {
+                                    Completable.complete()
+                                }
                             } else {
-                                Completable.complete()
+                                updateOutputState {
+                                    it.copy(citiesChain = citiesChain.take(citiesChain.size - 1))
+                                }
                             }
-                        } else {
-                            updateOutputState {
-                                it.copy(citiesChain = citiesChain.take(citiesChain.size - 1))
-                            }
-                        }
-                    }?.bindInputLifecycle()
+                        }?.bindInputLifecycle()
 
+            }
         }
     }
 
-    override fun outputStateInitLoad() {
-        updateOutputState { it.copy(showLoadingDialog = true) }
-                .andThen(citiesRepository.getRootCites()
-                        .switchThread())
-                .flatMapCompletable { rootCities ->
-                    updateOutputState { state ->
-                        state.copy(citiesChain = listOf(none<City>() to rootCities))
-                    }
+    override fun DialogOwner.outputStateInitWithDialog(): Completable = citiesRepository.getRootCites()
+            .switchThread()
+            .showLoadingDialog()
+            .flatMapCompletable { rootCities ->
+                updateOutputState { state ->
+                    state.copy(citiesChain = listOf(none<City>() to rootCities))
                 }
-                .finally(updateOutputState { it.copy(showLoadingDialog = false) })
-                .bindLife()
+            }
+
+    override fun outputStateInitLoad() {
     }
 
 

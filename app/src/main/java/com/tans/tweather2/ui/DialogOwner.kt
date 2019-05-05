@@ -1,71 +1,74 @@
 package com.tans.tweather2.ui
 
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AlertDialog
 import com.tans.tweather2.R
-import io.reactivex.subjects.Subject
+import io.reactivex.Completable
+import io.reactivex.Maybe
+import io.reactivex.Observable
+import io.reactivex.Single
 
 interface DialogOwner {
 
     val context: Context
 
-    val showingDialogs: MutableMap<String, AlertDialog>
-
-    val dialogEvents: Subject<DialogEvent>
-
-    fun showLoadingDialog(tag: String) {
-        disMissDialog(tag)
-        val dialog = AlertDialog.Builder(context)
-                .setView(R.layout.layout_loading)
-                .setCancelable(false)
-                .dismissEvent(tag)
-                .create()
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.show()
-        showingDialogs[tag] = dialog
+    fun Completable.showLoadingDialog(): Completable {
+        val loadingDialog = createLoadingDialog()
+        return doOnSubscribe { loadingDialog.show() }
+                .doFinally { loadingDialog.cancel() }
     }
 
-    fun showCommonDialog(tag: String, title: String?, msg: String?) {
-        val dialog = AlertDialog.Builder(context)
+    fun <T> Single<T>.showLoadingDialog(): Single<T> {
+        val loadingDialog = createLoadingDialog()
+        return doOnSubscribe { loadingDialog.show() }
+                .doFinally { loadingDialog.cancel() }
+    }
+
+    fun <T> Observable<T>.showLoadingDialog(): Observable<T> {
+        val loadingDialog = createLoadingDialog()
+        return doOnSubscribe { loadingDialog.show() }
+                .doFinally { loadingDialog.cancel() }
+    }
+
+    fun <T> Maybe<T>.showLoadingDialog(): Maybe<T> {
+        val loadingDialog = createLoadingDialog()
+        return doOnSubscribe { loadingDialog.show() }
+                .doFinally { loadingDialog.cancel() }
+    }
+
+    fun showCommonDialog(title: Int, msg: Int): Single<DialogEvent> = Single.create { emitter ->
+        AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(msg)
-                .dismissEvent(tag)
-                .positiveEvent(tag)
-                .negativeEvent(tag)
+                .setPositiveButton(R.string.dialog_ok) { dialog, _ ->
+                    emitter.onSuccess(DialogEvent.PositiveEvent(dialog))
+                }
+                .setNegativeButton(R.string.dialog_cancel) { dialog, _ ->
+                    emitter.onSuccess(DialogEvent.NegativeEvent(dialog))
+                }
+                .setOnCancelListener {
+                    emitter.onSuccess(DialogEvent.CancelEvent(it))
+                }
                 .create()
-        dialog.show()
-        showingDialogs[tag] = dialog
+                .show()
     }
 
-    fun disMissDialog(tag: String) {
-        showingDialogs[tag]?.cancel()
-        showingDialogs.remove(tag)
-        dialogEvents.onNext(DialogEvent.DismissEvent(tag))
-    }
 
-    fun AlertDialog.Builder.dismissEvent(tag: String): AlertDialog.Builder =
-            setOnDismissListener { disMissDialog(tag) }
-
-
-    fun AlertDialog.Builder.positiveEvent(tag: String): AlertDialog.Builder =
-            setPositiveButton(R.string.dialog_ok) { dialog, _ ->
-                dialogEvents.onNext(DialogEvent.OkEvent(tag))
-                dialog.dismiss()
+    private fun createLoadingDialog()
+            : AlertDialog = AlertDialog.Builder(context)
+            .setView(R.layout.layout_loading)
+            .setCancelable(false)
+            .create().apply {
+                window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             }
-
-    fun AlertDialog.Builder.negativeEvent(tag: String): AlertDialog.Builder =
-            setNegativeButton(R.string.dialog_cancel) { dialog, _ ->
-                dialogEvents.onNext(DialogEvent.CancelEvent(tag))
-                dialog.dismiss()
-            }
-
 
 }
 
-sealed class DialogEvent(val tag: String) {
-    class OkEvent(tag: String) : DialogEvent(tag)
-    class CancelEvent(tag: String) : DialogEvent(tag)
-    class DismissEvent(tag: String) : DialogEvent(tag)
+sealed class DialogEvent(val dialog: DialogInterface) {
+    class PositiveEvent(dialog: DialogInterface) : DialogEvent(dialog)
+    class NegativeEvent(dialog: DialogInterface) : DialogEvent(dialog)
+    class CancelEvent(dialog: DialogInterface) : DialogEvent(dialog)
 }

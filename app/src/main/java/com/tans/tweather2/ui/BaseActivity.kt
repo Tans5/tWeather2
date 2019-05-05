@@ -37,10 +37,6 @@ abstract class BaseActivity<VM : BaseViewModel<OutputState, Input>, VDB : ViewDa
     override val context: Context
         get() = this
 
-    override val showingDialogs: MutableMap<String, AlertDialog> = HashMap()
-
-    override val dialogEvents: Subject<DialogEvent> = PublishSubject.create<DialogEvent>().toSerialized()
-
     private val resultSubject = PublishSubject.create<ActivityResult>().toSerialized()
 
     lateinit var viewDataBinding: VDB

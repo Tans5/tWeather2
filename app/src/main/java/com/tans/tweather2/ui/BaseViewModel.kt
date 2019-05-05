@@ -15,11 +15,21 @@ abstract class BaseViewModel<OutputState, Input>(defaultState: OutputState) : Vi
     fun setInput(input: Input?, subscriber: ViewModelSubscriber) {
         subscriber.inputCompositeDisposable.clear()
         inputUpdate(input, subscriber)
+        val outputInitWithDialog = if (subscriber is DialogOwner) {
+            subscriber.outputStateInitWithDialog()
+        } else {
+            Completable.complete()
+        }
+        subscriber.apply {
+            outputInitWithDialog.bindInputLifecycle()
+        }
     }
 
     abstract fun inputUpdate(input: Input?, subscriber: ViewModelSubscriber)
 
     abstract fun outputStateInitLoad()
+
+    open fun DialogOwner.outputStateInitWithDialog(): Completable = Completable.complete()
 
     override fun onCleared() {
         super.onCleared()
