@@ -2,7 +2,11 @@ package com.tans.tweather2
 
 import okhttp3.*
 import okio.BufferedSource
-import okio.Okio
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
+import okhttp3.Headers.Companion.headersOf
+import okio.buffer
+import okio.source
 
 class MockResponseInterceptor(private val jsonFilePath: String) : Interceptor {
 
@@ -11,9 +15,8 @@ class MockResponseInterceptor(private val jsonFilePath: String) : Interceptor {
         val bodySource = readJsonFileAsResource()
         chain.proceed(chain.request())
         return Response.Builder()
-                .body(ResponseBody.create(MediaType.get("application/json"),
-                        bodySource?.readString(Charsets.UTF_8) ?: ""))
-                .headers(Headers.of("Content-Type", "application/json"))
+                .body((bodySource?.readString(Charsets.UTF_8) ?: "").toResponseBody("application/json".toMediaType()))
+                .headers(headersOf("Content-Type", "application/json"))
                 .protocol(Protocol.HTTP_1_1)
                 .code(200)
                 .request(chain.request())
@@ -23,7 +26,7 @@ class MockResponseInterceptor(private val jsonFilePath: String) : Interceptor {
 
     private fun readJsonFileAsResource(): BufferedSource? {
         val inputStream = javaClass.classLoader?.getResourceAsStream("api-response/$jsonFilePath")
-        return if (inputStream != null) Okio.buffer(Okio.source(inputStream)) else null
+        return inputStream?.source()?.buffer()
     }
 
 }

@@ -76,7 +76,7 @@ class ApiTest {
                 .build()
 
         val response = okHttpClient.newCall(request).execute()
-        println(response.body()?.string())
+        println(response.body?.string())
 
     }
 
