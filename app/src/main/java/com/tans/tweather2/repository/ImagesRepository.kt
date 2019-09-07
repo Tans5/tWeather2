@@ -41,9 +41,7 @@ class ImagesRepository @Inject constructor(private val bingService: BingService,
 
     private fun getLatestImagesLocal(): Maybe<Images> = imagesDao.queryLatestImages()
 
-    private fun insertImages(images: Images): Completable = Completable.fromCallable {
-        imagesDao.insert(images = images)
-    }
+    private fun insertImages(images: Images): Completable = imagesDao.insert(images = images)
 
     /**
      * eg: 20190418

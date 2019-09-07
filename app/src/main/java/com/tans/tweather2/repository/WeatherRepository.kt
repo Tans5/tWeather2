@@ -53,9 +53,7 @@ class WeatherRepository @Inject constructor(
         weatherDao.queryWeatherByWoeid(city.woeid)
     }
 
-    private fun updateWeatherLocal(weather: Weather): Completable = Completable.fromAction {
-        weatherDao.insert(weather)
-    }
+    private fun updateWeatherLocal(weather: Weather): Completable = weatherDao.insert(weather)
 
     private fun updateCityLocal(city: City): Completable {
         return citiesRepository.updateCity(city)

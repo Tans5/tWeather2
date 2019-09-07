@@ -22,13 +22,11 @@ class CitiesRepository @Inject constructor(private val citiesService: CitiesServ
         citiesDao.maxFavorOrder()
                 .switchIfEmpty(Single.just(0))
                 .flatMapCompletable {
-                    Completable.fromAction { citiesDao.insert(city.copy(favorOrder = it + 1)) }
+                    citiesDao.insert(city.copy(favorOrder = it + 1))
                 }
     }
 
-    fun updateCity(city: City): Completable = Completable.fromAction {
-        citiesDao.insert(city)
-    }
+    fun updateCity(city: City): Completable = citiesDao.insert(city)
 
     fun getFavorCitiesSize(): Maybe<Int> = citiesDao.favorCitySize()
 
@@ -48,8 +46,11 @@ class CitiesRepository @Inject constructor(private val citiesService: CitiesServ
             } ?: "")
                     .map { cities1 ->
                         val fixedCities = cities1.map { it.copy(parentId = parentId ?: -1, level = level) }
-                        citiesDao.insert(fixedCities)
                         fixedCities
+                    }
+                    .flatMap { cities ->
+                        citiesDao.insert(cities)
+                                .andThen(Single.just(cities))
                     }
         } else {
             Single.just(cities)

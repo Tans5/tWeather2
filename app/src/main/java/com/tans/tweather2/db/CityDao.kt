@@ -6,15 +6,16 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.tans.tweather2.api.service.Cities
 import com.tans.tweather2.entites.City
+import io.reactivex.Completable
 import io.reactivex.Maybe
 
 @Dao
 interface CityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(city: City)
+    fun insert(city: City): Completable
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(cities: Cities)
+    fun insert(cities: Cities): Completable
 
     @Query("select * from city where id = :id")
     fun queryById(id: String): Maybe<Cities>
