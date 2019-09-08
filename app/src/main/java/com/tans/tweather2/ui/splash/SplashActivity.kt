@@ -20,7 +20,7 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding, Spla
     override fun init() {
 
         viewModel.setInput(input = SplashInput(chooseCity = viewDataBinding.choseCityTv.clicks(),
-                enterLocation = viewDataBinding.enterTv.clicks()), subscriber = this)
+                enterLocation = viewDataBinding.enterTv.clicks()), inputOwner = this)
 
         subScribeState({ it.choseCity }) { city ->
             if (city is Some) {

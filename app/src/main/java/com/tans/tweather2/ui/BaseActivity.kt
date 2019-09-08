@@ -1,18 +1,18 @@
 package com.tans.tweather2.ui
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import com.tans.tweather2.core.BindLife
+import com.tans.tweather2.core.InputOwner
 import com.tans.tweather2.viewmodel.TWeatherViewModelFactory
 import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.Maybe
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
-import io.reactivex.subjects.Subject
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -20,22 +20,18 @@ abstract class BaseActivity<VM : BaseViewModel<OutputState, Input>, VDB : ViewDa
 
     : DaggerAppCompatActivity(),
         BindLife,
-        ViewModelSubscriber,
-        DialogOwner{
+        InputOwner {
 
     @Inject
     lateinit var viewModelFactory: TWeatherViewModelFactory
 
-    val viewModel: VM by lazy { ViewModelProviders.of(this, viewModelFactory).get(viewModelClazz) }
-
-    override val outputCompositeDisposable: CompositeDisposable = CompositeDisposable()
+    val viewModel: VM by lazy {
+        ViewModelProvider(this, viewModelFactory).get(viewModelClazz)
+    }
 
     override val inputCompositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override val lifeCompositeDisposable: CompositeDisposable = CompositeDisposable()
-
-    override val context: Context
-        get() = this
 
     private val resultSubject = PublishSubject.create<ActivityResult>().toSerialized()
 
@@ -44,13 +40,12 @@ abstract class BaseActivity<VM : BaseViewModel<OutputState, Input>, VDB : ViewDa
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewDataBinding = DataBindingUtil.setContentView(this, layoutId())
-        viewModel.outputStateInitLoad()
+        viewModel.init()
         init()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        outputCompositeDisposable.clear()
         inputCompositeDisposable.clear()
         lifeCompositeDisposable.clear()
     }
@@ -79,8 +74,9 @@ abstract class BaseActivity<VM : BaseViewModel<OutputState, Input>, VDB : ViewDa
         viewModel.bindOutputState()
                 .map { mapper(it) }
                 .distinctUntilChanged()
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext { handle(it) }
-                .bindOutputLifecycle()
+                .bindLife()
     }
 
 }

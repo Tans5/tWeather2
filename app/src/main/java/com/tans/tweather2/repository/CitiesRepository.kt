@@ -48,9 +48,9 @@ class CitiesRepository @Inject constructor(private val citiesService: CitiesServ
                         val fixedCities = cities1.map { it.copy(parentId = parentId ?: -1, level = level) }
                         fixedCities
                     }
-                    .flatMap { cities ->
-                        citiesDao.insert(cities)
-                                .andThen(Single.just(cities))
+                    .flatMap { fixedCities ->
+                        citiesDao.insert(fixedCities)
+                                .andThen(Single.just(fixedCities))
                     }
         } else {
             Single.just(cities)

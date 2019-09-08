@@ -5,6 +5,6 @@ import com.tans.tweather2.api.service.Cities
 import com.tans.tweather2.entites.City
 
 data class CitiesOutputState(
-        val citiesChain: List<CitiesAndParent> = emptyList())
+        val citiesChainAndChildren: List<ParentAndChildren> = emptyList())
 
-typealias CitiesAndParent = Pair<Option<City>, Cities>
+typealias ParentAndChildren = Pair<Option<City>, Cities>

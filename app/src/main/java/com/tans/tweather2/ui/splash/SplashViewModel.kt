@@ -4,10 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import arrow.core.Some
 import arrow.core.some
+import com.tans.tweather2.core.InputOwner
 import com.tans.tweather2.repository.CitiesRepository
 import com.tans.tweather2.ui.BaseActivity
 import com.tans.tweather2.ui.BaseViewModel
-import com.tans.tweather2.ui.ViewModelSubscriber
 import com.tans.tweather2.ui.cities.CitiesActivity
 import com.tans.tweather2.ui.main.MainActivity
 import com.tans.tweather2.utils.switchThread
@@ -17,8 +17,8 @@ import io.reactivex.rxkotlin.withLatestFrom
 import javax.inject.Inject
 
 class SplashViewModel @Inject constructor(private val citiesRepository: CitiesRepository) : BaseViewModel<SplashOutputState, SplashInput>(SplashOutputState()) {
-    override fun inputUpdate(input: SplashInput?, subscriber: ViewModelSubscriber) {
-        with(subscriber) {
+    override fun inputUpdate(input: SplashInput?, inputOwer: InputOwner) {
+        with(inputOwer) {
 
             input?.chooseCity
                     ?.flatMapMaybe {
@@ -30,8 +30,8 @@ class SplashViewModel @Inject constructor(private val citiesRepository: CitiesRe
                         }
                     }
                     ?.flatMapCompletable { city ->
-                        updateOutputState { it.copy(choseCity = city.some()) }
-                    }?.bindInputLifecycle()
+                        updateState { it.copy(choseCity = city.some()) }
+                    }?.bindInputLife()
 
             input?.enterLocation
                     ?.withLatestFrom(bindOutputState().map { it.choseCity })
@@ -50,17 +50,17 @@ class SplashViewModel @Inject constructor(private val citiesRepository: CitiesRe
                             }
                         }
                     }
-                    ?.bindInputLifecycle()
+                    ?.bindInputLife()
         }
     }
 
 
-    override fun outputStateInitLoad() {
+    override fun init() {
 
         citiesRepository.getFavorCitiesSize()
                 .switchThread()
                 .flatMapCompletable { size ->
-                    updateOutputState { state ->
+                    updateState { state ->
                         val hasFavorCity = size > 0
                         state.copy(hasFavorCity = hasFavorCity)
                     }
